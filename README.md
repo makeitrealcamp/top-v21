@@ -1,15 +1,18 @@
 # Programa Top v21 -  Tiempo Parcial
 
 ## Mentores 👩🏻‍🏫👨🏼‍🏫
-- [Nombre del mentor](profiles/mentor-principal.md)
-- Mentor 2
-- Mentor 3
+- [Gustavo Morales](https://github.com/gmoralesc)
+- [Sergio Andres Jaramillo](https://github.com/SergioJaramilloL)
 
 ## Estudiantes 👩🏻‍💻🧑🏼‍💻
-- Estudiante 1
-- Estudiante 2
-- Estudiante 3
-- ...
+- [Bibiana Peña](https://github.com/BibianaPena)
+- [Felipe Ramirez Yepes](https://github.com/felipery)
+- [Jailer Fonseca](https://github.com/Jailer008)
+- [Juan Granados](https://github.com/juanernestog/)
+- [Karlo Verde](https://github.com/mrverdant13)
+- [Miriam Retamozo](https://github.com/miri7)
+- [Nicolás Pastrana](https://github.com/pastranaserra)
+- [Samuel Hincapié](https://github.com/samuelh08)
 
 ## Como es un dia de estudio durante el programa TOP?
 
