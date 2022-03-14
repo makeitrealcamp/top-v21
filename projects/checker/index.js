@@ -1,5 +1,6 @@
 const commandLineArgs = require('command-line-args');
 const { load, save } = require('./store');
+const { print } = require('./utils');
 
 async function main() {
   // read command lines args
@@ -25,11 +26,7 @@ async function main() {
 
   await save(items);
 
-  for (let index = 0; index < items.length; index++) {
-    const { title = '', completed = false, date = '' } = items[index];
-    const checked = completed ? '[✓]' : '[ ]';
-    console.log(`${checked} ${title} [${date}]`);
-  }
+  await print(items);
 }
 
 main();
