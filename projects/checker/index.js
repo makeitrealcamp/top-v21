@@ -1,6 +1,6 @@
 const commandLineArgs = require('command-line-args');
 const { load, save } = require('./store');
-const { print } = require('utils.js');
+const { print } = require('./utils.js');
 
 async function main() {
 	// read command lines args
