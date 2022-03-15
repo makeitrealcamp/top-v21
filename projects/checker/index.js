@@ -26,7 +26,9 @@ async function main() {
 
   await save(items);
 
-  logItems(items);
+  logItems(items).forEach(function ({ title, date, checked }) {
+    console.log(`${checked} ${title} [${date}]`);
+  });
 }
 
 main();
