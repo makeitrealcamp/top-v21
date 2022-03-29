@@ -1,19 +1,38 @@
 exports.list = (req, res) => {
-  res.json([]);
+  const { query = {} } = req;
+  res.json({
+    data: [],
+    included: query,
+  });
 };
 
 exports.create = (req, res) => {
-  res.json({});
+  const { body = {} } = req;
+  res.json({
+    data: body,
+  });
 };
 
 exports.read = (req, res) => {
-  res.json({});
+  const { params = {} } = req;
+  const { id } = params;
+  res.json({
+    id,
+  });
 };
 
 exports.update = (req, res) => {
-  res.json({});
+  const { params = {} } = req;
+  const { id } = params;
+  res.json({
+    id,
+  });
 };
 
 exports.delete = (req, res) => {
-  res.json({});
+  const { params = {} } = req;
+  const { id } = params;
+  res.json({
+    id,
+  });
 };

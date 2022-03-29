@@ -3,6 +3,8 @@ const api = require('./api/v1');
 
 const app = express();
 
+app.use(express.json());
+
 app.use('/api', api);
 app.use('/api/v1', api);
 
