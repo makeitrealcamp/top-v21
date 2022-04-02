@@ -14,11 +14,20 @@ const fields = {
   },
 };
 
-const tweet = new Schema(fields, {
+const references = {
+  userId: {
+    type: mongoose.ObjectId,
+    ref: 'user',
+    required: true,
+  },
+};
+
+const tweet = new Schema(Object.assign(fields, references), {
   timestamps: true,
 });
 
 module.exports = {
   Model: mongoose.model('tweet', tweet),
   fields,
+  references,
 };
