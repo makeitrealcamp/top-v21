@@ -18,4 +18,7 @@ const tweet = new Schema(fields, {
   timestamps: true,
 });
 
-module.exports = mongoose.model('tweet', tweet);
+module.exports = {
+  Model: mongoose.model('tweet', tweet),
+  fields,
+};
