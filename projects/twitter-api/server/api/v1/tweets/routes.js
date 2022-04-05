@@ -1,5 +1,6 @@
 const express = require('express');
 const controller = require('./controller');
+const commentsRoutes = require('../comments/routes');
 
 const router = express.Router();
 
@@ -20,5 +21,14 @@ router
   .get(controller.read)
   .put(controller.update)
   .delete(controller.delete);
+
+/*
+ * /api/tweets/:tweetId/comments GET -> LIST
+ * /api/tweets/:tweetId/comments POST -> CREATE
+ * /api/tweets/:tweetId/comments/:id GET -> READ
+ * /api/tweets/:tweetId/comments/:id PUT -> UPDATE
+ * /api/tweets/:tweetId/comments/:id DELETE -> DELETE
+ */
+router.use('/:tweetId/comments', commentsRoutes);
 
 module.exports = router;

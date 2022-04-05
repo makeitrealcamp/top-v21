@@ -1,6 +1,34 @@
-const { Model, fields } = require('./model');
+const { Model, fields, references } = require('./model');
+const { Model: Tweet } = require('../tweets/model');
 
-const { paginationParams, sortParams } = require('../../../utils');
+const {
+  paginationParams,
+  sortParams,
+  filterByNested,
+} = require('../../../utils');
+
+const referencesNames = Object.getOwnPropertyNames(references);
+
+exports.parentId = async (req, res, next) => {
+  const { params = {} } = req;
+  const { tweetId = null } = params;
+
+  if (tweetId) {
+    const doc = await Tweet.findById(tweetId);
+    if (doc) {
+      next();
+    } else {
+      const message = 'Tweet not found';
+
+      next({
+        message,
+        statusCode: 404,
+      });
+    }
+  } else {
+    next();
+  }
+};
 
 exports.id = async (req, res, next) => {
   const { params = {} } = req;
@@ -24,20 +52,23 @@ exports.id = async (req, res, next) => {
 };
 
 exports.list = async (req, res, next) => {
-  const { query = {} } = req;
+  const { query = {}, params = {} } = req;
   const { limit, skip, page } = paginationParams(query);
   const { sortBy, direction } = sortParams(query, fields);
+  const sort = {
+    [sortBy]: direction,
+  };
+  const { filters, populate } = filterByNested(params, referencesNames);
 
   try {
     const data = await Promise.all([
-      Model.find({})
+      Model.find(filters)
         .skip(skip)
         .limit(limit)
-        .sort({
-          [sortBy]: direction,
-        })
+        .sort(sort)
+        .populate(populate)
         .exec(),
-      Model.countDocuments(),
+      Model.countDocuments(filters),
     ]);
     const [docs, total] = data;
 
@@ -60,7 +91,9 @@ exports.list = async (req, res, next) => {
 };
 
 exports.create = async (req, res, next) => {
-  const { body = {} } = req;
+  const { body = {}, params = {} } = req;
+
+  Object.assign(body, params);
 
   try {
     const model = new Model(body);
@@ -84,9 +117,9 @@ exports.read = async (req, res) => {
 };
 
 exports.update = async (req, res, next) => {
-  const { doc = {}, body = {} } = req;
+  const { doc = {}, body = {}, params = {} } = req;
 
-  Object.assign(doc, body);
+  Object.assign(doc, body, params);
 
   try {
     const updated = await doc.save();
