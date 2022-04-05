@@ -1,14 +1,22 @@
-const { Model, fields, references } = require('./model');
+const { Model, fields, references, virtuals } = require('./model');
 
-const { paginationParams, sortParams } = require('../../../utils');
-const referencesNames = Object.getOwnPropertyNames(references);
+const {
+  paginationParams,
+  sortParams,
+  populateToObject,
+} = require('../../../utils');
+const referencesNames = [
+  ...Object.getOwnPropertyNames(references),
+  ...Object.getOwnPropertyNames(virtuals),
+];
 
 exports.id = async (req, res, next) => {
   const { params = {} } = req;
   const { id } = params;
+  const populate = populateToObject(referencesNames, virtuals);
 
   try {
-    const doc = await Model.findById(id);
+    const doc = await Model.findById(id).populate(populate);
     if (!doc) {
       const message = `${Model.name} not found`;
       next({
@@ -28,16 +36,17 @@ exports.list = async (req, res, next) => {
   const { query = {} } = req;
   const { limit, skip, page } = paginationParams(query);
   const { sortBy, direction } = sortParams(query, fields);
-  const populate = referencesNames.join(' ');
+  const sort = {
+    [sortBy]: direction,
+  };
+  const populate = populateToObject(referencesNames, virtuals);
 
   try {
     const data = await Promise.all([
       Model.find({})
         .skip(skip)
         .limit(limit)
-        .sort({
-          [sortBy]: direction,
-        })
+        .sort(sort)
         .populate(populate)
         .exec(),
       Model.countDocuments(),
