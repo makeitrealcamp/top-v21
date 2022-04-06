@@ -42,7 +42,21 @@ const fields = {
 
 const user = new Schema(fields, {
   timestamps: true,
+  toJSON: {
+    virtuals: true,
+  },
 });
+
+user
+  .virtual('name')
+  .get(function () {
+    return this.firstname + ' ' + this.lastname;
+  })
+  .set(function (value) {
+    const [firstname = '', lastname = ''] = value.split(' ');
+    this.firstname = firstname;
+    this.lastname = lastname;
+  });
 
 module.exports = {
   Model: mongoose.model('user', user),
