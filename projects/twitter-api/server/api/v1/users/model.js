@@ -45,6 +45,9 @@ const user = new Schema(fields, {
   toJSON: {
     virtuals: true,
   },
+  toObject: {
+    virtuals: true,
+  },
 });
 
 user
@@ -57,6 +60,18 @@ user
     this.firstname = firstname;
     this.lastname = lastname;
   });
+
+const hiddenFields = ['password'];
+
+user.methods.toJSON = function () {
+  const doc = this.toObject();
+
+  hiddenFields.forEach((field) => {
+    delete doc[field];
+  });
+
+  return doc;
+};
 
 module.exports = {
   Model: mongoose.model('user', user),
