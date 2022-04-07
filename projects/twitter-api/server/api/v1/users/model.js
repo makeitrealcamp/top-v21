@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { hash, compare } = require('bcryptjs');
 
 const { Schema } = mongoose;
 
@@ -71,6 +72,17 @@ user.methods.toJSON = function () {
   });
 
   return doc;
+};
+
+user.pre('save', async function (next) {
+  if (this.isNew || this.isModified('password')) {
+    this.password = await hash(this.password, 10);
+  }
+  next();
+});
+
+user.methods.verifyPassword = function (value) {
+  return compare(value, this.password);
 };
 
 module.exports = {

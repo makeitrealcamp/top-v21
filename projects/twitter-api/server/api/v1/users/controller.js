@@ -1,6 +1,4 @@
-const { Model, fields } = require('./model');
-
-const { paginationParams, sortParams } = require('../../../utils');
+const { Model } = require('./model');
 
 exports.id = async (req, res, next) => {
   const { params = {} } = req;
@@ -23,43 +21,36 @@ exports.id = async (req, res, next) => {
   }
 };
 
-exports.list = async (req, res, next) => {
-  const { query = {} } = req;
-  const { limit, skip, page } = paginationParams(query);
-  const { sortBy, direction } = sortParams(query, fields);
+exports.signin = async (req, res, next) => {
+  const { body = {} } = req;
+  const { email = '', password = '' } = body;
 
   try {
-    const data = await Promise.all([
-      Model.find({})
-        .skip(skip)
-        .limit(limit)
-        .sort({
-          [sortBy]: direction,
-        })
-        .exec(),
-      Model.countDocuments(),
-    ]);
-    const [docs, total] = data;
+    const user = await Model.findOne({ email }).exec();
+    if (!user) {
+      return next({
+        message: 'Email or password invalid',
+        statusCode: 401,
+      });
+    }
 
-    const pages = Math.ceil(total / limit);
+    const verified = await user.verifyPassword(password);
+    if (!verified) {
+      return next({
+        message: 'Email or password invalid',
+        statusCode: 401,
+      });
+    }
 
     res.json({
-      data: docs,
-      meta: {
-        pages,
-        page,
-        skip,
-        limit,
-        sortBy,
-        direction,
-      },
+      data: user,
     });
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 };
 
-exports.create = async (req, res, next) => {
+exports.signup = async (req, res, next) => {
   const { body = {} } = req;
 
   try {
