@@ -1,6 +1,7 @@
 const express = require('express');
 const controller = require('./controller');
 const commentsRoutes = require('../comments/routes');
+const { auth } = require('../auth');
 
 const router = express.Router();
 
@@ -12,15 +13,15 @@ const router = express.Router();
  * /api/tweets/:id DELETE -> DELETE
  */
 
-router.route('/').get(controller.list).post(controller.create);
+router.route('/').get(controller.list).post(auth, controller.create);
 
 router.param('id', controller.id);
 
 router
   .route('/:id')
   .get(controller.read)
-  .put(controller.update)
-  .delete(controller.delete);
+  .put(auth, controller.update)
+  .delete(auth, controller.delete);
 
 /*
  * /api/tweets/:tweetId/comments GET -> LIST

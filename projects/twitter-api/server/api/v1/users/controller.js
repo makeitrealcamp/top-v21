@@ -1,4 +1,5 @@
 const { Model } = require('./model');
+const { signToken } = require('../auth');
 
 exports.id = async (req, res, next) => {
   const { params = {} } = req;
@@ -42,8 +43,14 @@ exports.signin = async (req, res, next) => {
       });
     }
 
+    const { _id: id } = user;
+    const token = signToken({ id });
+
     res.json({
       data: user,
+      meta: {
+        token,
+      },
     });
   } catch (error) {
     next(error);
@@ -57,9 +64,15 @@ exports.signup = async (req, res, next) => {
     const model = new Model(body);
     const doc = await model.save();
 
+    const { _id: id } = user;
+    const token = signToken({ id });
+
     res.status(201);
     res.json({
       data: doc,
+      meta: {
+        token,
+      },
     });
   } catch (err) {
     next(err);

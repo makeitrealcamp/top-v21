@@ -72,10 +72,11 @@ exports.list = async (req, res, next) => {
 };
 
 exports.create = async (req, res, next) => {
-  const { body = {} } = req;
+  const { body = {}, decoded = {} } = req;
+  const { id } = decoded;
 
   try {
-    const model = new Model(body);
+    const model = new Model(Object.assign(body, { userId: id }));
     const doc = await model.save();
 
     res.status(201);
