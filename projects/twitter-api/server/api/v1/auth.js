@@ -35,7 +35,41 @@ const auth = async (req, res, next) => {
   });
 };
 
+const owner = (req, res, next) => {
+  const { decoded = {}, doc = {} } = req;
+  const { id: authId } = decoded;
+  const {
+    userId: { id: userId },
+  } = doc;
+
+  if (authId === userId) {
+    next();
+  } else {
+    next({
+      message: 'Forbidden',
+      statusCode: 403,
+    });
+  }
+};
+
+const me = (req, res, next) => {
+  const { decoded = {}, doc = {} } = req;
+  const { id: authId } = decoded;
+  const { id: userId } = doc;
+
+  if (authId === userId) {
+    next();
+  } else {
+    next({
+      message: 'Forbidden',
+      statusCode: 403,
+    });
+  }
+};
+
 module.exports = {
   signToken,
   auth,
+  owner,
+  me,
 };

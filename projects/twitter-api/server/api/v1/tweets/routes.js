@@ -1,7 +1,7 @@
 const express = require('express');
 const controller = require('./controller');
 const commentsRoutes = require('../comments/routes');
-const { auth } = require('../auth');
+const { auth, owner } = require('../auth');
 
 const router = express.Router();
 
@@ -20,8 +20,8 @@ router.param('id', controller.id);
 router
   .route('/:id')
   .get(controller.read)
-  .put(auth, controller.update)
-  .delete(auth, controller.delete);
+  .put(auth, owner, controller.update)
+  .delete(auth, owner, controller.delete);
 
 /*
  * /api/tweets/:tweetId/comments GET -> LIST

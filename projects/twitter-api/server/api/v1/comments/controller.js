@@ -91,9 +91,10 @@ exports.list = async (req, res, next) => {
 };
 
 exports.create = async (req, res, next) => {
-  const { body = {}, params = {} } = req;
+  const { body = {}, params = {}, decoded = {} } = req;
+  const { id } = decoded;
 
-  Object.assign(body, params);
+  Object.assign(body, params, { userId: id });
 
   try {
     const model = new Model(body);
