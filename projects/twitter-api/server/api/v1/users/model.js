@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const { hash, compare } = require('bcryptjs');
+const validator = require('validator');
+const { body } = require('express-validator');
 
 const { Schema } = mongoose;
 
@@ -32,6 +34,16 @@ const fields = {
     type: String,
     required: true,
     trim: true,
+    unique: true,
+    lowercase: true,
+    validate: {
+      validator(value) {
+        return validator.isEmail(value);
+      },
+      message(props) {
+        return `${props.value} is not a valid email`;
+      },
+    },
   },
   password: {
     type: String,
@@ -85,7 +97,13 @@ user.methods.verifyPassword = function (value) {
   return compare(value, this.password);
 };
 
+const sanitizers = [
+  body('email').normalizeEmail(),
+  body('description').escape(),
+];
+
 module.exports = {
   Model: mongoose.model('user', user),
   fields,
+  sanitizers,
 };

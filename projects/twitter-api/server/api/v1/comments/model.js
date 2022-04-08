@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { body } = require('express-validator');
 
 const { Schema } = mongoose;
 
@@ -27,8 +28,11 @@ const comment = new Schema(Object.assign(fields, references), {
   timestamps: true,
 });
 
+const sanitizers = [body('comment').escape()];
+
 module.exports = {
   Model: mongoose.model('comment', comment),
   fields,
   references,
+  sanitizers,
 };

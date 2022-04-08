@@ -1,6 +1,7 @@
 const express = require('express');
 const controller = require('./controller');
 const { auth, me } = require('../auth');
+const { sanitizers } = require('./model');
 
 const router = express.Router();
 
@@ -12,15 +13,15 @@ const router = express.Router();
  * /api/users/:id DELETE -> DELETE
  */
 
-router.route('/signup').post(controller.signup);
-router.route('/signin').post(controller.signin);
+router.route('/signup').post(sanitizers, controller.signup);
+router.route('/signin').post(sanitizers, controller.signin);
 
 router.param('id', controller.id);
 
 router
   .route('/:id')
   .get(controller.read)
-  .put(auth, me, controller.update)
+  .put(auth, me, sanitizers, controller.update)
   .delete(auth, me, controller.delete);
 
 module.exports = router;

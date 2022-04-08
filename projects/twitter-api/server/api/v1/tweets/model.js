@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { body } = require('express-validator');
 
 const { Schema } = mongoose;
 
@@ -46,9 +47,12 @@ const virtuals = {
 tweet.virtual('comments', virtuals.comments);
 tweet.virtual('commentsCount', virtuals.commentsCount);
 
+const sanitizers = [body('content').escape()];
+
 module.exports = {
   Model: mongoose.model('tweet', tweet),
   fields,
   references,
   virtuals,
+  sanitizers,
 };
