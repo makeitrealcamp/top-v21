@@ -1,8 +1,17 @@
 const express = require('express');
+const cors = require('cors');
+
 const api = require('./api/v1');
 
 const app = express();
 
+app.use(
+  cors({
+    // origin: '*',
+    // methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    // allowedHeaders: ['Accept', 'Content-Type', 'Authorization'],
+  }),
+);
 app.use(express.json());
 
 app.use('/api', api);
