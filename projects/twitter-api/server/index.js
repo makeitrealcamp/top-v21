@@ -1,7 +1,9 @@
 const express = require('express');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
 
 const api = require('./api/v1');
+const docs = require('./api/v1/docs');
 
 const app = express();
 
@@ -16,6 +18,8 @@ app.use(express.json());
 
 app.use('/api', api);
 app.use('/api/v1', api);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs));
 
 app.use((req, res, next) => {
   next({
