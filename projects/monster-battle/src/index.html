@@ -18,7 +18,7 @@
             <li class="button poison">poison</li>
           </ul>
           <div class="meter">
-            <span class="bar green" style="width: 100%"></span>
+            <span id="bar" class="bar green" style="width: 100%"></span>
           </div>
           <div class="health">60/60</div>
         </div>
@@ -76,5 +76,37 @@
       This is not an official pokemon game, this is only for educational
       proposes
     </p>
+    <script src="./utils.js"></script>
+    <script>
+      // State
+      const pokemon = {
+        health: {
+          initial: 60,
+          current: 60,
+          bar: 'green',
+        },
+      };
+
+      // Find DOM Elements
+      const bar = document.getElementById('bar');
+
+      // Turn
+      const { newHealth, newPercentage } = calculateStatus(
+        pokemon.health.initial,
+        pokemon.health.current,
+        getRandomNumber(50),
+      );
+      const newBarColor = calculateBarColor(newPercentage);
+      const previousBarColor = pokemon.health.bar;
+
+      // Update State
+      pokemon.health.current = newHealth;
+      pokemon.health.bar = newBarColor;
+
+      // Update UI
+      bar.setAttribute('style', `width: ${newPercentage}%`);
+      bar.classList.remove(previousBarColor);
+      bar.classList.add(newBarColor);
+    </script>
   </body>
 </html>
