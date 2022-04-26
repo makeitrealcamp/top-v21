@@ -8,7 +8,7 @@
   </head>
   <body>
     <section id="arena">
-      <div class="column" id="pokemon1">
+      <div class="column">
         <div class="status">
           <div class="info">
             <p class="name">ivysaur</p>
@@ -28,7 +28,7 @@
           />
         </div>
       </div>
-      <div class="column" id="pokemon2">
+      <div class="column">
         <div class="pokemon">
           <img
             src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png"
@@ -77,19 +77,16 @@
       proposes
     </p>
     <script src="./utils.js"></script>
+    <script src="./state.js"></script>
     <script>
-      // State
-      const pokemon = {
-        health: {
-          initial: 60,
-          current: 60,
-          bar: 'green',
-        },
-      };
-
       function turn() {
+        const { pokemons = [], position = 0 } = state;
+        const pokemon = pokemons[position];
+
         // Find DOM Elements
-        const container = document.getElementById('pokemon2');
+        const arena = document.getElementById('arena');
+        const columns = arena.getElementsByClassName('column');
+        const container = columns[position];
         const [bar] = container.getElementsByClassName('bar');
         const [health] = container.getElementsByClassName('health');
 
@@ -115,6 +112,9 @@
       }
 
       const game = setInterval(function () {
+        const { pokemons = [], position = 0 } = state;
+        const pokemon = pokemons[position];
+
         turn();
 
         if (pokemon.health.current === 0) {
