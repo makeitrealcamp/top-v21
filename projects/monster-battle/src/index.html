@@ -8,69 +8,16 @@
   </head>
   <body>
     <section id="arena">
-      <div class="column">
-        <div class="status">
-          <div class="info">
-            <p class="name">ivysaur</p>
-          </div>
-          <ul class="types">
-            <li class="button grass">grass</li>
-            <li class="button poison">poison</li>
-          </ul>
-          <div class="meter">
-            <span class="bar green" style="width: 100%"></span>
-          </div>
-          <div class="health">60/60</div>
-        </div>
-        <div class="pokemon">
-          <img
-            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png"
-          />
-        </div>
-      </div>
-      <div class="column">
-        <div class="pokemon">
-          <img
-            src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png"
-          />
-        </div>
-        <div class="status">
-          <div class="info">
-            <p class="name">charmeleon</p>
-          </div>
-          <ul class="types">
-            <li class="button fire">fire</li>
-          </ul>
-          <div class="meter">
-            <span class="bar green" style="width: 100%"></span>
-          </div>
-          <div class="health">59/59</div>
-        </div>
-      </div>
+      <div class="column"></div>
+      <div class="column"></div>
     </section>
     <section id="indicator">
-      <div class="column">
-        <div class="arrow"></div>
-      </div>
+      <div class="column"></div>
       <div class="column"></div>
     </section>
     <section id="panel">
-      <div class="column">
-        <div class="dialog">
-          <p>
-            <span class="name">ivysaur</span>,
-            <span class="message">What attack do you want to use?</span>
-          </p>
-        </div>
-      </div>
-      <div class="column">
-        <div class="moves">
-          <button class="button black">tackle</button>
-          <button class="button black">vine-whip</button>
-          <button class="button black">leech-seed</button>
-          <button class="button black">poison-powder</button>
-        </div>
-      </div>
+      <div class="column"></div>
+      <div class="column"></div>
     </section>
     <p id="disclaimer">
       This is not an official pokemon game, this is only for educational
@@ -78,15 +25,67 @@
     </p>
     <script src="./utils.js"></script>
     <script src="./state.js"></script>
+    <script src="./components.js"></script>
     <script>
+      function render() {
+        const { pokemons = [], position = 0 } = state;
+
+        // Render pokemons
+        const arena = document.getElementById('arena');
+        const columns = arena.getElementsByClassName('column');
+
+        pokemons.forEach((pokemon, index) => {
+          const container = columns[index];
+
+          const pokemonHTML = pokemonBox(pokemon);
+          const statusBarHTML = statusBar(pokemon);
+
+          if (index === 0) {
+            container.innerHTML = statusBarHTML + pokemonHTML;
+          } else {
+            container.innerHTML = pokemonHTML + statusBarHTML;
+          }
+        });
+
+        // render Arrow indicator
+        const indicator = document.getElementById('indicator');
+        const [left, right] = indicator.getElementsByClassName('column');
+        if (position === 0) {
+          left.innerHTML = '<div class="arrow"></div>';
+          right.innerHTML = '';
+        } else {
+          right.innerHTML = '<div class="arrow"></div>';
+          left.innerHTML = '';
+        }
+
+        // Render controls
+        const panel = document.getElementById('panel');
+        const message = 'What attack do you want to use?';
+        const pokemon = pokemons[position];
+
+        const dialogHTML = dialog(pokemon, message);
+        const movesElement = movesBox(pokemon);
+
+        const [leftPanel, rightPanel] = panel.children;
+
+        if (position === 0) {
+          leftPanel.innerHTML = dialogHTML;
+          rightPanel.replaceChildren(movesElement);
+        } else {
+          rightPanel.innerHTML = dialogHTML;
+          leftPanel.replaceChildren(movesElement);
+        }
+      }
+
       function turn() {
         const { pokemons = [], position = 0 } = state;
-        const pokemon = pokemons[position];
+        const attacked = (position + 1) % 2;
+        const pokemon = state.pokemons[attacked];
 
         // Find DOM Elements
         const arena = document.getElementById('arena');
         const columns = arena.getElementsByClassName('column');
-        const container = columns[position];
+        const container = columns[attacked];
         const [bar] = container.getElementsByClassName('bar');
         const [health] = container.getElementsByClassName('health');
 
@@ -109,18 +108,23 @@
         bar.classList.add(newBarColor);
 
         health.textContent = `${pokemon.health.current}/${pokemon.health.initial}`;
+
+        if (newHealth > 0) {
+          state.position = (state.position + 1) % 2;
+          render();
+        } else {
+          clearInterval(game);
+          document
+            .getElementById('panel')
+            .querySelector('.message').textContent = 'Wins!!!';
+          document.getElementById('panel').querySelector('.moves').innerHTML =
+            '';
+        }
       }
 
-      const game = setInterval(function () {
-        const { pokemons = [], position = 0 } = state;
-        const pokemon = pokemons[position];
+      render();
 
-        turn();
-
-        if (pokemon.health.current === 0) {
-          clearInterval(game);
-        }
-      }, 1000);
+      const game = setInterval(turn, 1000);
     </script>
   </body>
 </html>
