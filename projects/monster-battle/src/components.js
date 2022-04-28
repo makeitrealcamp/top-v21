@@ -52,7 +52,7 @@ function dialog(pokemon = {}, message = '') {
   `;
 }
 
-function movesBox(pokemon = {}) {
+function movesBox(pokemon = {}, callback) {
   const { moves = [] } = pokemon;
 
   const movesContainer = document.createElement('div');
@@ -62,6 +62,8 @@ function movesBox(pokemon = {}) {
     const button = document.createElement('button');
     button.className = 'button black';
     button.textContent = move.name;
+
+    button.addEventListener('click', callback);
 
     movesContainer.appendChild(button);
   });

@@ -1,39 +1,29 @@
-const state = {
-  pokemons: [
-    {
-      name: 'ivysaur',
-      health: {
-        initial: 60,
-        current: 60,
-        bar: 'green',
-      },
-      artwork:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png',
-      types: [{ name: 'grass' }, { name: 'poison' }],
-      moves: [
-        { name: 'swords-dance' },
-        { name: 'cut' },
-        { name: 'bind' },
-        { name: 'vine-whip' },
-      ],
+function transformPokemonData(data) {
+  return {
+    name: data.name,
+    health: {
+      initial: data.stats[0].base_stat,
+      current: data.stats[0].base_stat,
+      bar: 'green',
     },
-    {
-      name: 'charmeleon',
-      health: {
-        initial: 58,
-        current: 58,
-        bar: 'green',
-      },
-      artwork:
-        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png',
-      types: [{ name: 'fire' }],
-      moves: [
-        { name: 'mega-punch' },
-        { name: 'fire-punch' },
-        { name: 'thunder-punch' },
-        { name: 'scratch' },
-      ],
-    },
-  ],
-  position: 0,
-};
+    artwork: data.sprites.other['official-artwork'].front_default,
+    types: data.types.map((item) => ({ name: item.type.name })),
+    moves: data.moves.slice(0, 4).map((item) => ({ name: item.move.name })),
+  };
+}
+
+async function getPokemon() {
+  const id = getRandomNumber(150, 1);
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+  const data = await response.json();
+  return transformPokemonData(data);
+}
+
+async function getState() {
+  const pokemons = await Promise.all([getPokemon(), getPokemon()]);
+
+  return {
+    pokemons,
+    position: 0,
+  };
+}
