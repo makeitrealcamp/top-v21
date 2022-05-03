@@ -1,4 +1,6 @@
-function pokemonBox(pokemon = {}) {
+import { calculateStatus } from './utils';
+
+export function pokemonBox(pokemon = {}) {
   const { artwork = '' } = pokemon;
 
   return `
@@ -10,7 +12,7 @@ function pokemonBox(pokemon = {}) {
   `;
 }
 
-function statusBar(pokemon = {}) {
+export function statusBar(pokemon = {}) {
   const {
     name = '',
     health: { current = 0, initial = 0, bar = '' },
@@ -39,7 +41,7 @@ function statusBar(pokemon = {}) {
   `;
 }
 
-function dialog(pokemon = {}, message = '') {
+export function dialog(pokemon = {}, message = '') {
   const { name = '' } = pokemon;
 
   return `
@@ -52,7 +54,7 @@ function dialog(pokemon = {}, message = '') {
   `;
 }
 
-function movesBox(pokemon = {}, callback) {
+export function movesBox(pokemon = {}, callback) {
   const { moves = [] } = pokemon;
 
   const movesContainer = document.createElement('div');
