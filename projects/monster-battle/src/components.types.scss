@@ -1,0 +1,65 @@
+@mixin type($bgcolor: white) {
+  background: linear-gradient(180deg, $bgcolor 50%, $bgcolor 50%);
+  background-color: $bgcolor;
+}
+
+@mixin typeCombined($bgcolor1: white, $bgcolor2: black) {
+  background: linear-gradient(180deg, $bgcolor1 50%, $bgcolor2 50%);
+  background-color: $bgcolor1;
+}
+
+.grass {
+  @include type(#9bcc50)
+}
+.poison {
+  @include type(#b97fc9)
+}
+.fire {
+  @include type(#fd7d24)
+}
+.psychic {
+  @include type(#f366b9)
+}
+.ice {
+  @include type(#51c4e7)
+}
+.flying {
+  @include typeCombined(#3dc7ef, #bdb9b8)
+}
+.water {
+  @include type(#4592c4)
+}
+.ground {
+  @include typeCombined(#f7de3f, #ab9842)
+}
+.rock {
+  @include type(#a38c21)
+}
+.electric {
+  @include type(#eed535);
+  color: #555;
+}
+.bug {
+  @include type(#729f3f);
+}
+.normal {
+  @include type(#a4acaf)
+}
+.fighting {
+  @include type(#d56723)
+}
+.fairy {
+  @include type(#fdb9e9)
+}
+.steel {
+  @include type(#9eb7b8)
+}
+.dark {
+  @include type(#707070)
+}
+.ghost {
+  @include type(#7b62a3)
+}
+.dragon {
+  @include typeCombined(#53a4cf, #f16e57)
+}

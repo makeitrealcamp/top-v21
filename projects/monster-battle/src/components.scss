@@ -1,0 +1,123 @@
+@use 'base';
+
+// status bar
+
+.name {
+  color: base.$primary-color;
+  margin: 0;
+  text-transform: capitalize;
+  width: 100%;
+}
+
+.types {
+  display: none;
+  margin: 0 24px 0 0;
+  padding: 0;
+  text-align: right;
+
+  li {
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+}
+
+.meter {
+  background: white;
+  border: 5px solid base.$primary-color;
+  border-top: 5px solid white;
+  border-bottom: 5px solid white;
+  box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+  height: 24px;
+  padding: 10px;
+}
+
+.bar {
+  border-radius: 24px;
+  box-shadow: inset 0 2px 9px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.4);
+  display: block;
+  height: 100%;
+  transition: width 1s ease-in-out;
+
+  &.green {
+    background-color: rgb(43, 194, 83);
+    background-image: -webkit-gradient(
+      linear,
+      left bottom,
+      left top,
+      color-stop(0, rgb(43, 194, 83)),
+      color-stop(1, rgb(84, 240, 84))
+    );
+  }
+  &.orange {
+    background-color: #f1a165;
+    background-image: -webkit-linear-gradient(#f1a165, #f36d0a);
+  }
+  &.red {
+    background-color: #f0a3a3;
+    background-image: -webkit-linear-gradient(#f0a3a3, #f42323);
+  }
+}
+
+.health {
+  background: white;
+  border: 5px solid base.$primary-color;
+  border-top: 5px solid white;
+  color: base.$primary-color;
+  padding: 8px;
+}
+
+// pokemon
+
+.pokemon {
+  clear: both;
+  img {
+    max-width: 80%;
+  }
+}
+
+// panel
+
+.dialog {
+  border: 5px solid base.$primary-color;
+  border-style: double;
+  font-size: 18px;
+}
+
+.info {
+  background: white;
+  border: 5px solid base.$primary-color;
+  border-bottom: 5px solid white;
+  display: flex;
+  padding: 8px;
+}
+
+.moves .button {
+  width: 164px;
+}
+
+.button {
+  border: 2px solid white;
+  border-radius: 8px;
+  color: white;
+  display: inline-block;
+  font-family: 'Courier New', Courier, monospace;
+  list-style: none;
+  margin: 0;
+  padding: 4px 8px;
+  text-align: center;
+  vertical-align: baseline;
+  -webkit-font-smoothing: antialiased;
+  &.black {
+    background-color: #313131;
+    font-size: 18px;
+    padding: 8px;
+    text-transform: capitalize;
+    &:hover { 
+      background-color: white;
+      border: 1px solid base.$primary-color;
+      color: base.$primary-color;
+    }
+  }
+}

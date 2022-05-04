@@ -1,5 +1,8 @@
 import { calculateStatus } from './utils';
 
+import './components.scss';
+import './components.types.scss';
+
 export function pokemonBox(pokemon = {}) {
   const { artwork = '' } = pokemon;
 
