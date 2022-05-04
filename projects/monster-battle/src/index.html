@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Game</title>
-    <link rel="stylesheet" href="./main.css" />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <section id="arena">
@@ -23,113 +27,5 @@
       This is not an official pokemon game, this is only for educational
       proposes
     </p>
-    <script src="./utils.js"></script>
-    <script src="./state.js"></script>
-    <script src="./components.js"></script>
-    <script>
-      (function () {
-        let state;
-
-        function render() {
-          const { pokemons = [], position = 0 } = state;
-
-          // Render pokemons
-          const arena = document.getElementById('arena');
-          const columns = arena.getElementsByClassName('column');
-
-          pokemons.forEach((pokemon, index) => {
-            const container = columns[index];
-
-            const pokemonHTML = pokemonBox(pokemon);
-            const statusBarHTML = statusBar(pokemon);
-
-            if (index === 0) {
-              container.innerHTML = statusBarHTML + pokemonHTML;
-            } else {
-              container.innerHTML = pokemonHTML + statusBarHTML;
-            }
-          });
-
-          // render Arrow indicator
-          const indicator = document.getElementById('indicator');
-          const [left, right] = indicator.getElementsByClassName('column');
-          if (position === 0) {
-            left.innerHTML = '<div class="arrow"></div>';
-            right.innerHTML = '';
-          } else {
-            right.innerHTML = '<div class="arrow"></div>';
-            left.innerHTML = '';
-          }
-
-          // Render controls
-          const panel = document.getElementById('panel');
-          const message = 'What attack do you want to use?';
-          const pokemon = pokemons[position];
-
-          const dialogHTML = dialog(pokemon, message);
-          const movesElement = movesBox(pokemon, turn);
-
-          const [leftPanel, rightPanel] = panel.children;
-
-          if (position === 0) {
-            leftPanel.innerHTML = dialogHTML;
-            rightPanel.replaceChildren(movesElement);
-          } else {
-            rightPanel.innerHTML = dialogHTML;
-            leftPanel.replaceChildren(movesElement);
-          }
-        }
-
-        function turn() {
-          const { pokemons = [], position = 0 } = state;
-          const attacked = (position + 1) % 2;
-          const pokemon = state.pokemons[attacked];
-
-          // Find DOM Elements
-          const arena = document.getElementById('arena');
-          const columns = arena.getElementsByClassName('column');
-          const container = columns[attacked];
-          const [bar] = container.getElementsByClassName('bar');
-          const [health] = container.getElementsByClassName('health');
-
-          // Turn
-          const { newHealth, newPercentage } = calculateStatus(
-            pokemon.health.initial,
-            pokemon.health.current,
-            getRandomNumber(20),
-          );
-          const newBarColor = calculateBarColor(newPercentage);
-          const previousBarColor = pokemon.health.bar;
-
-          // Update State
-          pokemon.health.current = newHealth;
-          pokemon.health.bar = newBarColor;
-
-          // Update UI
-          bar.setAttribute('style', `width: ${newPercentage}%`);
-          bar.classList.remove(previousBarColor);
-          bar.classList.add(newBarColor);
-
-          health.textContent = `${pokemon.health.current}/${pokemon.health.initial}`;
-
-          if (newHealth > 0) {
-            state.position = (state.position + 1) % 2;
-            render();
-          } else {
-            document
-              .getElementById('panel')
-              .querySelector('.message').textContent = 'Wins!!!';
-            document.getElementById('panel').querySelector('.moves').innerHTML =
-              '';
-          }
-        }
-
-        window.addEventListener('DOMContentLoaded', async () => {
-          state = await getState();
-
-          render();
-        });
-      })();
-    </script>
   </body>
 </html>

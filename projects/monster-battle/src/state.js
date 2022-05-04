@@ -1,3 +1,5 @@
+import { getRandomNumber } from './utils';
+
 function transformPokemonData(data) {
   return {
     name: data.name,
@@ -19,7 +21,7 @@ async function getPokemon() {
   return transformPokemonData(data);
 }
 
-async function getState() {
+export async function getState() {
   const pokemons = await Promise.all([getPokemon(), getPokemon()]);
 
   return {
