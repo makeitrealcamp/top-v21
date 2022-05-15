@@ -2,7 +2,7 @@ import { getState } from './state';
 import { getRandomNumber, calculateStatus, calculateBarColor } from './utils';
 import { pokemonBox, dialog, statusBar, movesBox } from './components';
 
-import './main.css';
+import './index.scss';
 
 let state;
 
