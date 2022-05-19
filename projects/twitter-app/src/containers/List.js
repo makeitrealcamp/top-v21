@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Spinner } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 import TweetCard from '../components/TweetCard';
 import { getTweets } from '../api/tweets';
 
 export default function List() {
+  const navigate = useNavigate();
+
   const [data, setData] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -27,6 +30,10 @@ export default function List() {
     loadList();
   }, []);
 
+  function onDisplayTweet(event, id) {
+    navigate(`tweets/${id}`);
+  }
+
   if (loading) {
     return (
       <Spinner animation="border" role="status">
@@ -39,12 +46,14 @@ export default function List() {
     <>
       {error && <Alert variant="danger">={error}</Alert>}
       {data.map((item) => (
-        <TweetCard
+        <div
           key={item.id}
-          user={item.user}
-          content={item.content}
-          date={item.date}
-        />
+          onClick={function (event) {
+            onDisplayTweet(event, item.id);
+          }}
+        >
+          <TweetCard user={item.user} content={item.content} date={item.date} />
+        </div>
       ))}
     </>
   );

@@ -28,3 +28,19 @@ export async function getTweets() {
     return Promise.reject('Network Error');
   }
 }
+
+export async function getTweet({ id }) {
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/tweets/${id}`);
+
+  if (response.ok) {
+    const json = await response.json();
+
+    const transformedData = transformTweet(json.data);
+
+    return {
+      data: transformedData,
+    };
+  } else {
+    return Promise.reject('Network Error');
+  }
+}
