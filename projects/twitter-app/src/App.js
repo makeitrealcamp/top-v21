@@ -1,30 +1,28 @@
 import React from 'react';
-import { Navbar, Container, Nav, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
+import { Routes, Route } from 'react-router-dom';
 
-import List from './containers/List';
+import Header from './components/Header';
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
+import Create from './pages/Create';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 
 export default function App() {
   return (
     <>
-      <Navbar bg="light" expand="lg">
-        <Container>
-          <Navbar.Brand href="#">Twitter</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link href="#">Create</Nav.Link>
-            </Nav>
-            <Nav>
-              <Nav.Link href="#">Sign Up</Nav.Link>
-              <Nav.Link href="#">Sign In</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <Header />
       <Container>
         <Row>
           <Col>
-            <List />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/create" element={<Create />} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
           </Col>
         </Row>
       </Container>
