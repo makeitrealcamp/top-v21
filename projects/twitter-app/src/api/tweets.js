@@ -44,3 +44,28 @@ export async function getTweet({ id }) {
     return Promise.reject('Network Error');
   }
 }
+
+export async function createTweet({ content }) {
+  const token = localStorage.getItem('token');
+
+  const response = await fetch(`${process.env.REACT_APP_API_URL}/tweets`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ content }),
+  });
+
+  if (response.ok) {
+    const json = await response.json();
+
+    const transformedData = transformTweet(json.data);
+
+    return {
+      data: transformedData,
+    };
+  } else {
+    return Promise.reject('Network Error');
+  }
+}
