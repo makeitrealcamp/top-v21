@@ -1,3 +1,5 @@
+import http from './http';
+
 function transformTweet(item) {
   return {
     id: item._id,
@@ -11,10 +13,8 @@ function transformTweet(item) {
 }
 
 export async function getTweets() {
-  const response = await fetch(`${process.env.REACT_APP_API_URL}/tweets`);
-
-  if (response.ok) {
-    const json = await response.json();
+  return await http.get(`/tweets`).then((response) => {
+    const { data: json } = response;
 
     const transformedData = json.data.map((item) => {
       return transformTweet(item);
@@ -24,48 +24,23 @@ export async function getTweets() {
       data: transformedData,
       meta: json.meta,
     };
-  } else {
-    return Promise.reject('Network Error');
-  }
-}
-
-export async function getTweet({ id }) {
-  const response = await fetch(`${process.env.REACT_APP_API_URL}/tweets/${id}`);
-
-  if (response.ok) {
-    const json = await response.json();
-
-    const transformedData = transformTweet(json.data);
-
-    return {
-      data: transformedData,
-    };
-  } else {
-    return Promise.reject('Network Error');
-  }
-}
-
-export async function createTweet({ content }) {
-  const token = localStorage.getItem('token');
-
-  const response = await fetch(`${process.env.REACT_APP_API_URL}/tweets`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ content }),
   });
+}
 
-  if (response.ok) {
-    const json = await response.json();
-
-    const transformedData = transformTweet(json.data);
-
+export function getTweet({ id }) {
+  return http.get(`/tweets/${id}`).then((response) => {
+    const { data: json } = response;
     return {
-      data: transformedData,
+      data: transformTweet(json.data),
     };
-  } else {
-    return Promise.reject('Network Error');
-  }
+  });
+}
+
+export function createTweet({ content }) {
+  return http.post(`/tweets`, { content }).then((response) => {
+    const { data: json } = response;
+    return {
+      data: transformTweet(json.data),
+    };
+  });
 }
