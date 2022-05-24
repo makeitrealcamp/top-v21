@@ -1,3 +1,5 @@
+import { formatDistance } from 'date-fns';
+
 import http from './http';
 
 function transformTweet(item) {
@@ -8,7 +10,10 @@ function transformTweet(item) {
       name: item.userId.name,
     },
     content: item.content,
-    date: item.createdAt,
+    date: formatDistance(new Date(item.createdAt), new Date(), {
+      addSuffix: true,
+    }),
+    createdAt: item.createdAt,
   };
 }
 

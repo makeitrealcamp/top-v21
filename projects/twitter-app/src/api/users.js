@@ -3,7 +3,14 @@ import http from './http';
 export async function signIn({ email, password }) {
   return http.post(`/users/signin`, { email, password }).then((response) => {
     const { data: json } = response;
-    return json;
+
+    if (json.meta?.token) {
+      localStorage.setItem('token', json.meta.token);
+    }
+
+    return {
+      data: json.data,
+    };
   });
 }
 

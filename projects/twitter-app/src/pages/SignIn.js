@@ -17,13 +17,12 @@ export default function SignIn() {
     try {
       setError('');
       setLoading(true);
-      const json = await signIn({
+      await signIn({
         email: email.value,
         password: password.value,
       });
 
       setLoading(false);
-      localStorage.setItem('token', json.meta.token);
       navigate('/');
     } catch (error) {
       setError(error);
