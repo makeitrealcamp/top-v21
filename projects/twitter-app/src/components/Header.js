@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import NavUser from './NavUser';
 
 export default function Header() {
   return (
@@ -16,14 +17,7 @@ export default function Header() {
               Create
             </Link>
           </Nav>
-          <Nav>
-            <Link to="/signup" className="nav-link">
-              Sign Up
-            </Link>
-            <Link to="/signin" className="nav-link">
-              Sign In
-            </Link>
-          </Nav>
+          <NavUser />
         </Navbar.Collapse>
       </Container>
     </Navbar>
