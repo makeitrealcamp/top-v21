@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Alert, Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import { signIn } from '../api/users';
+import UserContext from '../containers/UserContext';
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -17,10 +19,12 @@ export default function SignIn() {
     try {
       setError('');
       setLoading(true);
-      await signIn({
+      const json = await signIn({
         email: email.value,
         password: password.value,
       });
+
+      setUser(json.data);
 
       setLoading(false);
       navigate('/');

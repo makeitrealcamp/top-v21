@@ -35,7 +35,7 @@ instance.interceptors.response.use(
     // Do something with response error
     if (error.response.status === 401) {
       localStorage.removeItem('token');
-      document.location = '/signin';
+      document.location = '/signout';
     }
 
     if (error.response?.data?.message) {

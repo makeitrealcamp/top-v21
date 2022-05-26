@@ -1,9 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+import UserContext from '../containers/UserContext';
+
 export default function NavUser() {
-  return (
+  const { user } = useContext(UserContext);
+  // If the user exists
+  return user?.username ? (
+    <Nav>
+      <Link to="/profile" className="nav-link">
+        @{user.username}
+      </Link>
+      <Link to="/signout" className="nav-link">
+        Sign Out
+      </Link>
+    </Nav>
+  ) : (
     <Nav>
       <Link to="/signup" className="nav-link">
         Sign Up
