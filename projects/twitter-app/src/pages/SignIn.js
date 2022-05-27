@@ -1,31 +1,38 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Alert, Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
+import { signIn } from '../api/users';
 import UserContext from '../containers/UserContext';
-import useSignIn from '../hooks/useSignIn';
 
 export default function SignIn() {
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { data, loading, error } = useSignIn({ email, password });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   async function onSubmit(event) {
     event.preventDefault();
 
     const { email, password } = event.target.elements;
-    setEmail(email.value);
-    setPassword(password.value);
-  }
 
-  useEffect(() => {
-    if (data) {
-      setUser(data);
+    try {
+      setError('');
+      setLoading(true);
+      const json = await signIn({
+        email: email.value,
+        password: password.value,
+      });
+
+      setUser(json.data);
+
+      setLoading(false);
       navigate('/');
+    } catch (error) {
+      setError(error);
+      setLoading(false);
     }
-  }, [data, navigate, setUser]);
+  }
 
   return (
     <>
