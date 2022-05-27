@@ -1,35 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 
 import TweetCard from '../components/TweetCard';
-import { getTweet } from '../api/tweets';
 import { Alert, Spinner } from 'react-bootstrap';
+import useTweet from '../hooks/useTweet';
 
 export default function Tweet() {
   const params = useParams();
   const { id = '' } = params;
 
-  const [data, setData] = useState({});
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  async function loadTweet() {
-    try {
-      setError('');
-      setLoading(true);
-      const json = await getTweet({ id });
-
-      setData(json.data);
-      setLoading(false);
-    } catch (error) {
-      setError(error);
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    loadTweet();
-  }, []);
+  const { data, error, loading } = useTweet({ id });
 
   if (loading) {
     return (

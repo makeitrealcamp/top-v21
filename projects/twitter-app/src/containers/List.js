@@ -1,34 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Alert, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import TweetCard from '../components/TweetCard';
-import { getTweets } from '../api/tweets';
+import useTweets from '../hooks/useTweets';
 
 export default function List() {
   const navigate = useNavigate();
 
-  const [data, setData] = useState([]);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  async function loadList() {
-    try {
-      setError('');
-      setLoading(true);
-      const json = await getTweets();
-
-      setData(json.data);
-      setLoading(false);
-    } catch (error) {
-      setError(error);
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    loadList();
-  }, []);
+  const { data, error, loading } = useTweets();
 
   function onDisplayTweet(event, id) {
     navigate(`tweets/${id}`);
