@@ -32,7 +32,12 @@ export default function List() {
             onDisplayTweet(event, item.id);
           }}
         >
-          <TweetCard user={item.user} content={item.content} date={item.date} />
+          <TweetCard
+            user={item.user}
+            content={item.content}
+            date={item.date}
+            commentsCount={item.commentsCount}
+          />
         </div>
       ))}
     </>

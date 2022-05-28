@@ -22,7 +22,12 @@ export default function Tweet() {
   return (
     <>
       {error && <Alert variant="danger">{error}</Alert>}
-      <TweetCard user={data.user} content={data.content} date={data.date} />
+      <TweetCard
+        user={data.user}
+        content={data.content}
+        date={data.date}
+        commentsCount={data.commentsCount}
+      />
     </>
   );
 }

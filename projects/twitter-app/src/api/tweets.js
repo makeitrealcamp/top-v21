@@ -14,6 +14,7 @@ function transformTweet(item) {
       addSuffix: true,
     }),
     createdAt: item.createdAt,
+    commentsCount: item.commentsCount ?? 0,
   };
 }
 
