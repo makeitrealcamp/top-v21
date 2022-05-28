@@ -1,35 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import useSWR from 'swr';
 import { getTweet } from '../api/tweets';
 
 export default function useTweet({ id }) {
-  const [data, setData] = useState({});
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  const loadTweet = useCallback(
-    async function () {
-      try {
-        setError('');
-        setLoading(true);
-        const json = await getTweet({ id });
-
-        setData(json.data);
-        setLoading(false);
-      } catch (error) {
-        setError(error);
-        setLoading(false);
-      }
-    },
-    [id],
+  const { data, error } = useSWR(id ? `/tweets/${id}` : null, () =>
+    getTweet({ id }),
   );
 
-  useEffect(() => {
-    loadTweet();
-  }, [loadTweet]);
-
   return {
-    data,
+    data: data?.data,
     error,
-    loading,
+    loading: !error && !data,
   };
 }
