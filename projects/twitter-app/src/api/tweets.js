@@ -1,4 +1,5 @@
 import { formatDistance } from 'date-fns';
+import { transformComment } from './comments';
 
 import http from './http';
 
@@ -15,6 +16,9 @@ function transformTweet(item) {
     }),
     createdAt: item.createdAt,
     commentsCount: item.commentsCount ?? 0,
+    comments: Array.isArray(item.comments)
+      ? item.comments.map(transformComment)
+      : [],
     likes: item.likes,
   };
 }

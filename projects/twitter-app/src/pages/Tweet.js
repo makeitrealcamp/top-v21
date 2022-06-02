@@ -1,11 +1,15 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import { useSWRConfig } from 'swr';
 
 import TweetCard from '../components/TweetCard';
-import { Alert, Spinner } from 'react-bootstrap';
+import { Alert, Button, Form, Spinner } from 'react-bootstrap';
 import useTweet from '../hooks/useTweet';
+import Comment from '../components/Comment';
+import { createComment } from '../api/comments';
 
 export default function Tweet() {
+  const { mutate } = useSWRConfig();
   const params = useParams();
   const { id = '' } = params;
 
@@ -18,6 +22,25 @@ export default function Tweet() {
 
   function onLike(event) {
     like();
+  }
+
+  async function onComment(event) {
+    event.preventDefault();
+
+    const { comment } = event.target.elements;
+
+    try {
+      await createComment({
+        comment: comment.value,
+        tweetId: data.id,
+      });
+
+      comment.value = '';
+
+      mutate(`/tweets/${data.id}`);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   if (loading) {
@@ -39,6 +62,27 @@ export default function Tweet() {
         likes={data.likes}
         onLike={onLike}
       />
+      <hr />
+      <Form onSubmit={onComment}>
+        <Form.Group className="mb-3">
+          <Form.Label>Comment</Form.Label>
+          <Form.Control type="text" name="comment" as="textarea" rows="3" />
+        </Form.Group>
+        <Button variant="primary" type="submit" disabled={loading}>
+          Submit
+        </Button>
+      </Form>
+      <hr />
+      {data.comments.map(function (item) {
+        return (
+          <Comment
+            key={item.id}
+            user={item.user}
+            comment={item.comment}
+            date={item.date}
+          />
+        );
+      })}
     </>
   );
 }
