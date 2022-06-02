@@ -24,7 +24,7 @@ router.param('id', controller.id);
 router
   .route('/:id')
   .get(controller.read)
-  .put(auth, owner, sanitizers, controller.update)
+  .put(auth, owner, controller.update)
   .delete(auth, owner, controller.delete);
 
 /*
