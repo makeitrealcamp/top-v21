@@ -9,7 +9,16 @@ export default function Tweet() {
   const params = useParams();
   const { id = '' } = params;
 
-  const { data, error, loading } = useTweet({ id });
+  const {
+    data,
+    error,
+    loading,
+    actions: { like },
+  } = useTweet({ id });
+
+  function onLike(event) {
+    like();
+  }
 
   if (loading) {
     return (
@@ -27,6 +36,8 @@ export default function Tweet() {
         content={data.content}
         date={data.date}
         commentsCount={data.commentsCount}
+        likes={data.likes}
+        onLike={onLike}
       />
     </>
   );

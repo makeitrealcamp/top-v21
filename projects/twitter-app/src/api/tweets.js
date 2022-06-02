@@ -15,6 +15,7 @@ function transformTweet(item) {
     }),
     createdAt: item.createdAt,
     commentsCount: item.commentsCount ?? 0,
+    likes: item.likes,
   };
 }
 
@@ -44,6 +45,16 @@ export function getTweet({ id }) {
 
 export function createTweet({ content }) {
   return http.post(`/tweets`, { content }).then((response) => {
+    const { data: json } = response;
+    return {
+      data: transformTweet(json.data),
+    };
+  });
+}
+
+export function updateTweet(payload) {
+  const { id } = payload;
+  return http.put(`/tweets/${id}`, payload).then((response) => {
     const { data: json } = response;
     return {
       data: transformTweet(json.data),

@@ -8,10 +8,24 @@ import useTweets from '../hooks/useTweets';
 export default function List() {
   const navigate = useNavigate();
 
-  const { data, error, loading } = useTweets();
+  const {
+    data,
+    error,
+    loading,
+    actions: { update },
+  } = useTweets();
 
   function onDisplayTweet(event, id) {
     navigate(`tweets/${id}`);
+  }
+
+  async function onLike(event, id, count) {
+    event.stopPropagation();
+
+    await update({
+      id,
+      likes: count + 1,
+    });
   }
 
   if (loading) {
@@ -37,6 +51,10 @@ export default function List() {
             content={item.content}
             date={item.date}
             commentsCount={item.commentsCount}
+            likes={item.likes}
+            onLike={function (event) {
+              onLike(event, item.id, item.likes);
+            }}
           />
         </div>
       ))}
