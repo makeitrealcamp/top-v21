@@ -12,3 +12,7 @@ export function userReducer(state = initialState, action) {
       return state;
   }
 }
+
+export function getUser(state) {
+  return state.user;
+}

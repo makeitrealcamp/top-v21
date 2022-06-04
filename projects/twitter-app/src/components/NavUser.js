@@ -1,9 +1,12 @@
 import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { getUser } from '../store/userReducer';
 
-function NavUser({ user }) {
+export default function NavUser() {
+  const user = useSelector(getUser);
+
   return user.username ? (
     <Nav>
       <Link to="/profile" className="nav-link">
@@ -24,11 +27,3 @@ function NavUser({ user }) {
     </Nav>
   );
 }
-
-function mapStateToProps(state) {
-  return {
-    user: state.user,
-  };
-}
-
-export default connect(mapStateToProps)(NavUser);
