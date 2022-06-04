@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Alert, Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import { signIn } from '../api/users';
 
-export default function SignIn() {
+function SignIn({ setUser }) {
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -17,10 +18,12 @@ export default function SignIn() {
     try {
       setError('');
       setLoading(true);
-      await signIn({
+      const response = await signIn({
         email: email.value,
         password: password.value,
       });
+
+      setUser(response.data);
 
       setLoading(false);
       navigate('/');
@@ -58,3 +61,13 @@ export default function SignIn() {
     </>
   );
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setUser(payload) {
+      dispatch({ type: 'SET_USER', payload });
+    },
+  };
+}
+
+export default connect(null, mapDispatchToProps)(SignIn);

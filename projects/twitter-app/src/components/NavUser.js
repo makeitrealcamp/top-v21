@@ -1,9 +1,19 @@
 import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-export default function NavUser() {
-  return (
+function NavUser({ user }) {
+  return user.username ? (
+    <Nav>
+      <Link to="/profile" className="nav-link">
+        @{user.username}
+      </Link>
+      <Link to="/logout" className="nav-link">
+        Logout
+      </Link>
+    </Nav>
+  ) : (
     <Nav>
       <Link to="/signup" className="nav-link">
         Sign Up
@@ -14,3 +24,11 @@ export default function NavUser() {
     </Nav>
   );
 }
+
+function mapStateToProps(state) {
+  return {
+    user: state.user,
+  };
+}
+
+export default connect(mapStateToProps)(NavUser);
