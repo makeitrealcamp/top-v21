@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Alert, Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-
+import { setUser } from '../store/userSlice';
 import { signIn } from '../api/users';
 
 export default function SignIn() {
@@ -24,10 +24,7 @@ export default function SignIn() {
         password: password.value,
       });
 
-      dispatch({
-        type: 'SET_USER',
-        payload: response.data,
-      });
+      dispatch(setUser(response.data));
 
       setLoading(false);
       navigate('/');
