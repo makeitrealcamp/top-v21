@@ -13,6 +13,7 @@ const SignIn = React.lazy(() => import('./pages/SignIn'));
 const SignOut = React.lazy(() => import('./pages/SignOut'));
 const SignUp = React.lazy(() => import('./pages/SignUp'));
 const Tweet = React.lazy(() => import('./pages/Tweet'));
+const Profile = React.lazy(() => import('./pages/Profile'));
 
 export default function App() {
   return (
@@ -44,6 +45,7 @@ export default function App() {
                 <Route path="/signout" element={<SignOut />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/tweets/:id" element={<Tweet />} />
+                <Route path="/users/:username" element={<Profile />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </React.Suspense>

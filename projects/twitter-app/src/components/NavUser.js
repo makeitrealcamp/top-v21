@@ -9,7 +9,7 @@ export default function NavUser() {
   // If the user exists
   return user?.username ? (
     <Nav>
-      <Link to="/profile" className="nav-link">
+      <Link to={`/users/${user.username}`} className="nav-link">
         @{user.username}
       </Link>
       <Link to="/signout" className="nav-link">
