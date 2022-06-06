@@ -1,12 +1,16 @@
-import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import UserContext from '../containers/UserContext';
 
 export default function SignOut() {
+  const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
 
-  setUser(null);
+  useEffect(() => {
+    setUser(null);
+    navigate('/signin');
+  }, [navigate, setUser]);
 
-  return <Navigate to="/signin" />;
+  return null;
 }
