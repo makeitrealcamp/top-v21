@@ -1,6 +1,5 @@
 const express = require('express');
 const controller = require('./controller');
-const { auth, me } = require('../auth');
 const { sanitizers } = require('./model');
 
 const router = express.Router();
@@ -16,12 +15,6 @@ const router = express.Router();
 router.route('/signup').post(sanitizers, controller.signup);
 router.route('/signin').post(sanitizers, controller.signin);
 
-router.param('id', controller.id);
-
-router
-  .route('/:id')
-  .get(controller.read)
-  .put(auth, me, sanitizers, controller.update)
-  .delete(auth, me, controller.delete);
+router.route('/profile/:username').get(controller.read);
 
 module.exports = router;

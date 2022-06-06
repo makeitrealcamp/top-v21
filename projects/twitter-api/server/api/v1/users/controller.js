@@ -1,27 +1,6 @@
 const { Model } = require('./model');
 const { signToken } = require('../auth');
 
-exports.id = async (req, res, next) => {
-  const { params = {} } = req;
-  const { id } = params;
-
-  try {
-    const doc = await Model.findById(id);
-    if (!doc) {
-      const message = `${Model.name} not found`;
-      next({
-        message,
-        statusCode: 404,
-      });
-    } else {
-      req.doc = doc;
-      next();
-    }
-  } catch (err) {
-    next(err);
-  }
-};
-
 exports.signin = async (req, res, next) => {
   const { body = {} } = req;
   const { email = '', password = '' } = body;
@@ -80,37 +59,23 @@ exports.signup = async (req, res, next) => {
 };
 
 exports.read = async (req, res) => {
-  const { doc = {} } = req;
-
-  res.json({
-    data: doc,
-  });
-};
-
-exports.update = async (req, res, next) => {
-  const { doc = {}, body = {} } = req;
-
-  Object.assign(doc, body);
+  const { params = {} } = req;
+  const { username } = params;
 
   try {
-    const updated = await doc.save();
-    res.json({
-      data: updated,
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+    const doc = await Model.findOne({ username });
 
-exports.delete = async (req, res, next) => {
-  const { doc = {} } = req;
-
-  try {
-    const deleted = await doc.remove();
-    res.json({
-      data: deleted,
-    });
-  } catch (err) {
+    if (doc) {
+      res.json({
+        data: doc,
+      });
+    } else {
+      next({
+        statusCode: 404,
+        message: 'User not found',
+      });
+    }
+  } catch (error) {
     next(err);
   }
 };
