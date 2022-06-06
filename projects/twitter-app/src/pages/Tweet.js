@@ -1,35 +1,47 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
+import { useSWRConfig } from 'swr';
 
 import TweetCard from '../components/TweetCard';
-import { getTweet } from '../api/tweets';
-import { Alert, Spinner } from 'react-bootstrap';
+import { Alert, Button, Form, Spinner } from 'react-bootstrap';
+import useTweet from '../hooks/useTweet';
+import Comment from '../components/Comment';
+import { createComment } from '../api/comments';
 
 export default function Tweet() {
+  const { mutate } = useSWRConfig();
   const params = useParams();
   const { id = '' } = params;
 
-  const [data, setData] = useState({});
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
+  const {
+    data,
+    error,
+    loading,
+    actions: { like },
+  } = useTweet({ id });
 
-  async function loadTweet() {
-    try {
-      setError('');
-      setLoading(true);
-      const json = await getTweet({ id });
-
-      setData(json.data);
-      setLoading(false);
-    } catch (error) {
-      setError(error);
-      setLoading(false);
-    }
+  function onLike(event) {
+    like();
   }
 
-  useEffect(() => {
-    loadTweet();
-  }, []);
+  async function onComment(event) {
+    event.preventDefault();
+
+    const { comment } = event.target.elements;
+
+    try {
+      await createComment({
+        comment: comment.value,
+        tweetId: data.id,
+      });
+
+      comment.value = '';
+
+      mutate(`/tweets/${data.id}`);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   if (loading) {
     return (
@@ -42,7 +54,35 @@ export default function Tweet() {
   return (
     <>
       {error && <Alert variant="danger">{error}</Alert>}
-      <TweetCard user={data.user} content={data.content} date={data.date} />
+      <TweetCard
+        user={data.user}
+        content={data.content}
+        date={data.date}
+        commentsCount={data.commentsCount}
+        likes={data.likes}
+        onLike={onLike}
+      />
+      <hr />
+      <Form onSubmit={onComment}>
+        <Form.Group className="mb-3">
+          <Form.Label>Comment</Form.Label>
+          <Form.Control type="text" name="comment" as="textarea" rows="3" />
+        </Form.Group>
+        <Button variant="primary" type="submit" disabled={loading}>
+          Submit
+        </Button>
+      </Form>
+      <hr />
+      {data.comments.map(function (item) {
+        return (
+          <Comment
+            key={item.id}
+            user={item.user}
+            comment={item.comment}
+            date={item.date}
+          />
+        );
+      })}
     </>
   );
 }

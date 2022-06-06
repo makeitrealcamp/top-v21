@@ -16,7 +16,14 @@ exports.id = async (req, res, next) => {
   const populate = populateToObject(referencesNames, virtuals);
 
   try {
-    const doc = await Model.findById(id).populate(populate);
+    const doc = await Model.findById(id)
+      .populate(populate)
+      .populate({
+        path: 'comments',
+        populate: {
+          path: 'userId',
+        },
+      });
     if (!doc) {
       const message = `${Model.name} not found`;
       next({

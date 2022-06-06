@@ -1,4 +1,5 @@
 import { formatDistance } from 'date-fns';
+import { transformComment } from './comments';
 
 import http from './http';
 
@@ -14,6 +15,11 @@ function transformTweet(item) {
       addSuffix: true,
     }),
     createdAt: item.createdAt,
+    commentsCount: item.commentsCount ?? 0,
+    comments: Array.isArray(item.comments)
+      ? item.comments.map(transformComment)
+      : [],
+    likes: item.likes,
   };
 }
 
@@ -43,6 +49,16 @@ export function getTweet({ id }) {
 
 export function createTweet({ content }) {
   return http.post(`/tweets`, { content }).then((response) => {
+    const { data: json } = response;
+    return {
+      data: transformTweet(json.data),
+    };
+  });
+}
+
+export function updateTweet(payload) {
+  const { id } = payload;
+  return http.put(`/tweets/${id}`, payload).then((response) => {
     const { data: json } = response;
     return {
       data: transformTweet(json.data),

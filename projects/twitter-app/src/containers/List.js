@@ -1,37 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Alert, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import TweetCard from '../components/TweetCard';
-import { getTweets } from '../api/tweets';
+import useTweets from '../hooks/useTweets';
 
 export default function List() {
   const navigate = useNavigate();
 
-  const [data, setData] = useState([]);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  async function loadList() {
-    try {
-      setError('');
-      setLoading(true);
-      const json = await getTweets();
-
-      setData(json.data);
-      setLoading(false);
-    } catch (error) {
-      setError(error);
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    loadList();
-  }, []);
+  const {
+    data,
+    error,
+    loading,
+    actions: { update },
+  } = useTweets();
 
   function onDisplayTweet(event, id) {
     navigate(`tweets/${id}`);
+  }
+
+  async function onLike(event, id, count) {
+    event.stopPropagation();
+
+    await update({
+      id,
+      likes: count + 1,
+    });
   }
 
   if (loading) {
@@ -52,7 +46,16 @@ export default function List() {
             onDisplayTweet(event, item.id);
           }}
         >
-          <TweetCard user={item.user} content={item.content} date={item.date} />
+          <TweetCard
+            user={item.user}
+            content={item.content}
+            date={item.date}
+            commentsCount={item.commentsCount}
+            likes={item.likes}
+            onLike={function (event) {
+              onLike(event, item.id, item.likes);
+            }}
+          />
         </div>
       ))}
     </>
