@@ -42,3 +42,11 @@ export async function getProfileByUsername({ username }) {
     data: transformUser(json.data),
   };
 }
+
+export async function updateUser(payload) {
+  const response = await http.put(`/users/profile`, payload);
+  const { data: json } = response;
+  return {
+    data: transformUser(json.data),
+  };
+}

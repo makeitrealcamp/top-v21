@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Alert, Spinner } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import UserContext from '../containers/UserContext';
 import useProfile from '../hooks/useProfile';
 
 export default function Profile() {
   const { username } = useParams();
+  const { user } = useContext(UserContext);
   const { data, error, loading } = useProfile({ username });
 
   if (loading) {
@@ -18,6 +20,11 @@ export default function Profile() {
   return (
     <>
       {error && <Alert variant="danger">={error}</Alert>}
+      {user?.username === data.username && (
+        <Link className="btn btn-primary mt-4" to="/users/profile">
+          Edit Profile
+        </Link>
+      )}
       <div className="px-4 py-5 my-5 text-center">
         <h1>@{data.username}</h1>
         <h1 className="display-5 fw-bold">{data.name}</h1>

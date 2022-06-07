@@ -14,6 +14,7 @@ const SignOut = React.lazy(() => import('./pages/SignOut'));
 const SignUp = React.lazy(() => import('./pages/SignUp'));
 const Tweet = React.lazy(() => import('./pages/Tweet'));
 const Profile = React.lazy(() => import('./pages/Profile'));
+const ProfileEdit = React.lazy(() => import('./pages/ProfileEdit'));
 
 export default function App() {
   return (
@@ -44,8 +45,16 @@ export default function App() {
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/signout" element={<SignOut />} />
                 <Route path="/signup" element={<SignUp />} />
-                <Route path="/tweets/:id" element={<Tweet />} />
+                <Route
+                  path="/users/profile"
+                  element={
+                    <ProtectedRoute>
+                      <ProfileEdit />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route path="/users/:username" element={<Profile />} />
+                <Route path="/tweets/:id" element={<Tweet />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </React.Suspense>
