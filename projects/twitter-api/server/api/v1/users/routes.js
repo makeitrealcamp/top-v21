@@ -1,5 +1,6 @@
 const express = require('express');
 const controller = require('./controller');
+const { auth } = require('../auth');
 const { sanitizers } = require('./model');
 
 const router = express.Router();
@@ -16,5 +17,6 @@ router.route('/signup').post(sanitizers, controller.signup);
 router.route('/signin').post(sanitizers, controller.signin);
 
 router.route('/profile/:username').get(controller.read);
+router.route('/profile').put(auth, controller.update);
 
 module.exports = router;

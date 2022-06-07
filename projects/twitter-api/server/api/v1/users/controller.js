@@ -79,3 +79,25 @@ exports.read = async (req, res) => {
     next(err);
   }
 };
+
+exports.update = async (req, res) => {
+  const { decoded = {}, body = {} } = req;
+  const { id } = decoded;
+
+  try {
+    const doc = await Model.findOneAndUpdate({ id }, body, { new: true });
+
+    if (doc) {
+      res.json({
+        data: doc,
+      });
+    } else {
+      next({
+        statusCode: 404,
+        message: 'User not found',
+      });
+    }
+  } catch (error) {
+    next(err);
+  }
+};
