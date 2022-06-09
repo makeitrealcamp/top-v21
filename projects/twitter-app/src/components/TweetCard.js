@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import styled from '@emotion/styled';
 
 function Comments({ count }) {
   return (
@@ -55,6 +56,11 @@ function Likes({ count, onClick }) {
   );
 }
 
+const Content = styled(Card.Text)(({ theme, active = false }) => ({
+  border: `1px solid ${active ? theme.colors.gray900 : 'transparent'}`,
+  padding: 8,
+}));
+
 export default function TweetCard({
   user = {},
   content = '',
@@ -64,7 +70,7 @@ export default function TweetCard({
   onLike,
 }) {
   return (
-    <Card className="mt-3">
+    <Card className="mt-3" active>
       <Card.Body>
         <Card.Title>
           {user.name}{' '}
@@ -73,7 +79,7 @@ export default function TweetCard({
           </Link>
         </Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{date}</Card.Subtitle>
-        <Card.Text>{content}</Card.Text>
+        <Content>{content}</Content>
         <div className="d-flex me-2">
           <Comments count={commentsCount} />
           <Likes count={likes} onClick={onLike} />
