@@ -52,7 +52,12 @@ export default function SignIn() {
             name="password"
           />
         </Form.Group>
-        <Button variant="primary" type="submit" disabled={loading}>
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={loading}
+          title="submit"
+        >
           Submit
         </Button>
       </Form>
