@@ -1,7 +1,8 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
+import { isEqual } from 'lodash';
 
-export default function Comment({ user, comment, date }) {
+function Comment({ user, comment, date }) {
   return (
     <Card className="mt-3 ms-3">
       <Card.Body>
@@ -14,3 +15,7 @@ export default function Comment({ user, comment, date }) {
     </Card>
   );
 }
+
+export default React.memo(Comment, (prevProps, nextProps) => {
+  return isEqual(prevProps, nextProps);
+});

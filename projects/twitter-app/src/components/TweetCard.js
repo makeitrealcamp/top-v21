@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
-function Comments({ count }) {
+function CommentsComponent({ count }) {
   return (
     <div className="d-flex me-2 align-items-center">
       <svg
@@ -20,6 +20,10 @@ function Comments({ count }) {
     </div>
   );
 }
+
+const Comments = React.memo(CommentsComponent, function (prevProps, nextProps) {
+  return prevProps.count === nextProps.count;
+});
 
 function Likes({ count, onClick }) {
   return (
