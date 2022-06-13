@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import UserContext from '../containers/UserContext';
+import UserContext from './UserContext';
 
 export default function NavUser() {
   const { user } = useContext(UserContext);
