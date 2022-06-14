@@ -1,0 +1,4 @@
+[build]
+  base = "projects/twitter-api"  
+  publish = "projects/twitter-api/build"
+  command = "yarn build"
