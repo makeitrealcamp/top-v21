@@ -85,10 +85,10 @@ export default function TweetCard({
 }
 
 TweetCard.propTypes = {
-  user: {
+  user: PropTypes.shape({
     name: PropTypes.string,
     username: PropTypes.string,
-  },
+  }),
   content: PropTypes.string,
   date: PropTypes.string,
   commentsCount: PropTypes.number,
