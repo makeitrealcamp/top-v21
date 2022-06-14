@@ -1,3 +1,3 @@
 [build]
-  base = "projects/twitter-api/"  
+  base = "projects/twitter-app/"  
   publish = "projects/twitter-api/build/"
