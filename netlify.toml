@@ -1,0 +1,4 @@
+[build]
+  base = "projects/twitter-app/"
+  publish = "build/"
+  command = "yarn build"

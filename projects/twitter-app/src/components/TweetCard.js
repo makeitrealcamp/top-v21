@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-function Comments({ count }) {
+function CommentsComponent({ count }) {
   return (
     <div className="d-flex me-2 align-items-center">
       <svg
@@ -20,6 +20,10 @@ function Comments({ count }) {
     </div>
   );
 }
+
+const Comments = React.memo(CommentsComponent, function (prevProps, nextProps) {
+  return prevProps.count === nextProps.count;
+});
 
 function Likes({ count, onClick }) {
   return (
@@ -67,10 +71,7 @@ export default function TweetCard({
     <Card className="mt-3">
       <Card.Body>
         <Card.Title>
-          {user.name}{' '}
-          <Link to={`/users/${user.username}`} className="text-muted">
-            @{user.username}
-          </Link>
+          {user.name} @{user.username}
         </Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{date}</Card.Subtitle>
         <Card.Text>{content}</Card.Text>
@@ -82,3 +83,27 @@ export default function TweetCard({
     </Card>
   );
 }
+
+TweetCard.propTypes = {
+  user: PropTypes.shape({
+    name: PropTypes.string,
+    username: PropTypes.string,
+  }),
+  content: PropTypes.string,
+  date: PropTypes.string,
+  commentsCount: PropTypes.number,
+  likes: PropTypes.number,
+  onLike: PropTypes.func,
+};
+
+TweetCard.defaultProps = {
+  user: {
+    name: '',
+    username: '',
+  },
+  content: '',
+  date: '',
+  commentsCount: 0,
+  likes: 0,
+  onLike: undefined,
+};

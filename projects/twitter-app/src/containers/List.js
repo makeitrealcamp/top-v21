@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Alert, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import TweetCard from '../components/TweetCard';
 import useTweets from '../hooks/useTweets';
 
-export default function List() {
+export default function List({ filter = '' }) {
   const navigate = useNavigate();
 
   const {
@@ -28,6 +28,16 @@ export default function List() {
     });
   }
 
+  const filteredData = useMemo(() => {
+    return data?.filter((item) => {
+      if (filter) {
+        return item.content.includes(filter);
+      } else {
+        return true;
+      }
+    });
+  }, [data, filter]);
+
   if (loading) {
     return (
       <Spinner animation="border" role="status">
@@ -39,7 +49,7 @@ export default function List() {
   return (
     <>
       {error && <Alert variant="danger">={error}</Alert>}
-      {data.map((item) => (
+      {filteredData?.map((item) => (
         <div
           key={item.id}
           onClick={function (event) {

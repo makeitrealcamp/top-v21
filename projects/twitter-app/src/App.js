@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { Routes, Route } from 'react-router-dom';
 
-import Header from './components/Header';
+import Header from './containers/Header';
 import ProtectedRoute from './containers/ProtectedRoute';
 import { UserProvider } from './containers/UserContext';
 
