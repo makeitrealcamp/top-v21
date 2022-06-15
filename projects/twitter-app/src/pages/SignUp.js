@@ -28,8 +28,9 @@ export default function SignUp() {
       setLoading(true);
       await signUp(values);
       setLoading(false);
-      navigate('/');
       setSubmitting(false);
+
+      navigate('/');
     } catch (error) {
       console.log(error);
     }
