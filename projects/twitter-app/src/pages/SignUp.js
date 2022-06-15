@@ -32,7 +32,8 @@ export default function SignUp() {
 
       navigate('/');
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      setError(error);
     }
   }
 
