@@ -49,7 +49,7 @@ export default function List({ filter = '' }) {
   return (
     <>
       {error && <Alert variant="danger">={error}</Alert>}
-      {filteredData.map((item) => (
+      {filteredData?.map((item) => (
         <div
           key={item.id}
           onClick={function (event) {
