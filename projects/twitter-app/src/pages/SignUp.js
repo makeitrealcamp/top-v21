@@ -26,9 +26,8 @@ export default function SignUp() {
     try {
       setError('');
       setLoading(true);
-      const response = await signUp(values);
+      await signUp(values);
       setLoading(false);
-      localStorage.setItem('token', response.meta.token);
       navigate('/');
       setSubmitting(false);
     } catch (error) {
