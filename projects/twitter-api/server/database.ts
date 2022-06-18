@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const { logger } = require('./logger');
+import mongoose from 'mongoose';
+import { logger } from './logger';
 
-exports.connect = function ({
+export const connect = function ({
   protocol = 'mongodb',
   url = '',
   username = '',
@@ -18,22 +18,22 @@ exports.connect = function ({
   mongoose.connect(dburl);
 };
 
-exports.disconnect = function () {
+export const disconnect = function () {
   mongoose.connection.close(() => {
     logger.info('Database disconnected');
   });
 };
 
-mongoose.connection.on('open', (err) => {
+mongoose.connection.on('open', () => {
   logger.info('Database connected');
 });
 
-mongoose.connection.on('close', (err) => {
+mongoose.connection.on('close', () => {
   logger.info('Database disconnected');
 });
 
-mongoose.connection.on('error', (err) => {
-  logger.error(`Database error: ${err}`);
+mongoose.connection.on('error', (err: Error) => {
+  logger.error(`Database error: ${err.message}`);
 });
 
 process.on('SIGINT', () => {

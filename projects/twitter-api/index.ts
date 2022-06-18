@@ -1,14 +1,16 @@
-const http = require('http');
+import http from 'http';
 
-const app = require('./server');
-const database = require('./server/database');
+import configuration from './server/config';
+import { connect } from './server/database';
+import app from './server';
+
 const {
   database: { protocol, url, username, password },
   port,
-} = require('./server/config');
+} = configuration;
 
 // Database
-database.connect({
+connect({
   protocol,
   url,
   username,

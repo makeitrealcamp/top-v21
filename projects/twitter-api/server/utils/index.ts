@@ -1,20 +1,18 @@
-const config = require('../config');
+import configuration from '../config/index';
 
-const { pagination, sort, populate } = config;
+const { pagination, sort, populate } = configuration;
 
-const paginationParams = ({
-  limit = pagination.limit,
-  page = pagination.page,
-  skip,
+export const paginationParams = ({
+  limit = String(pagination.limit),
+  skip = String(pagination.skip),
 }) => ({
   limit: parseInt(limit, 10),
-  page: skip ? 0 : parseInt(page, 10),
-  skip: skip ? parseInt(skip, 10) : (page - 1) * limit,
+  skip: parseInt(skip, 10),
 });
 
-const sortParams = (
+export const sortParams = (
   { sortBy = sort.sortBy.default, direction = sort.direction.default },
-  fields,
+  fields: Record<string, string>,
 ) => {
   const allowList = {
     sortBy: [...sort.sortBy.fields, ...Object.getOwnPropertyNames(fields)],
@@ -28,7 +26,7 @@ const sortParams = (
   };
 };
 
-const populateToObject = (populateNames, virtuals = {}) => {
+export const populateToObject = (populateNames: string[], virtuals = {}) => {
   const virtualNames = Object.getOwnPropertyNames(virtuals);
   return populateNames.map((item) => {
     let options = {};
@@ -47,7 +45,7 @@ const populateToObject = (populateNames, virtuals = {}) => {
   });
 };
 
-const filterByNested = (params = {}, referencesNames = []) => {
+export const filterByNested = (params = {}, referencesNames = []) => {
   const paramsNames = Object.getOwnPropertyNames(params);
   const populateNames = referencesNames.filter(
     (item) => !paramsNames.includes(item),
@@ -56,11 +54,4 @@ const filterByNested = (params = {}, referencesNames = []) => {
     filters: params,
     populate: populateNames.join(''),
   };
-};
-
-module.exports = {
-  paginationParams,
-  sortParams,
-  populateToObject,
-  filterByNested,
 };

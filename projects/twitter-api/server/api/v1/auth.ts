@@ -1,14 +1,23 @@
 const { sign, verify } = require('jsonwebtoken');
+
+import configuration from '../../config';
+import { Request, Response, NextFunction } from 'express';
+
 const {
   token: { secret, expires },
-} = require('../../config');
+} = configuration;
 
-const signToken = (payload, expiresIn = expires) =>
+type RequestAuth = Request & {
+  decoded: Record<string, any>;
+  doc?: Record<string, any>;
+};
+
+const signToken = (payload: Record<string, string>, expiresIn = expires) =>
   sign(payload, secret, {
     expiresIn,
   });
 
-const auth = async (req, res, next) => {
+const auth = async (req: Request, res: Response, next: NextFunction) => {
   let { headers: { authorization: token = '' } = {} } = req;
 
   if (token.startsWith('Bearer')) {
@@ -22,21 +31,21 @@ const auth = async (req, res, next) => {
     });
   }
 
-  verify(token, secret, function (err, decoded) {
+  verify(token, secret, function (err: Error, decoded: Record<string, string>) {
     if (err) {
       next({
         message: 'Unauthorized',
         statusCode: 401,
       });
     } else {
-      req.decoded = decoded;
+      (req as RequestAuth).decoded = decoded;
       next();
     }
   });
 };
 
-const owner = (req, res, next) => {
-  const { decoded = {}, doc = {} } = req;
+const owner = (req: Request, res: Response, next: NextFunction) => {
+  const { decoded = {}, doc = {} } = req as RequestAuth;
   const { id: authId } = decoded;
   const {
     userId: { id: userId },
@@ -52,8 +61,8 @@ const owner = (req, res, next) => {
   }
 };
 
-const me = (req, res, next) => {
-  const { decoded = {}, doc = {} } = req;
+const me = (req: Request, res: Response, next: NextFunction) => {
+  const { decoded = {}, doc = {} } = req as RequestAuth;
   const { id: authId } = decoded;
   const { id: userId } = doc;
 

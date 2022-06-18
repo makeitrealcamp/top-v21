@@ -1,9 +1,10 @@
-const express = require('express');
-const { logger, requests } = require('./logger');
-const { v4: uuidv4 } = require('uuid');
+import express, { Request, Response, NextFunction } from 'express';
+import { logger, requests, loggerHeader } from './logger';
+import { v4 as uuidv4 } from 'uuid';
+import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
 
-const cors = require('cors');
-const swaggerUi = require('swagger-ui-express');
+import { RequestWithId, APIError } from './types';
 
 const api = require('./api/v1');
 const docs = require('./api/v1/docs');
@@ -12,7 +13,7 @@ const app = express();
 
 // Add unique ID to every request
 app.use((req, res, next) => {
-  req.id = uuidv4();
+  (req as RequestWithId).id = uuidv4();
   next();
 });
 
@@ -41,16 +42,16 @@ app.use((req, res, next) => {
   });
 });
 
-app.use((err, req, res, next) => {
-  const { message = '', level = 'error' } = err;
-  let { statusCode = 500 } = err;
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  const { message = '' } = err;
+  let { statusCode = 500 } = err as APIError;
 
   if (err?.name === 'ValidationError') {
     statusCode = 422;
   }
 
-  const log = `${logger.header(req)} ${statusCode} ${message}`;
-  logger[level](log);
+  const log = `${loggerHeader(req)} ${statusCode} ${message}`;
+  logger.error(log);
 
   res.status(statusCode);
   res.json({
@@ -58,4 +59,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-module.exports = app;
+export default app;
