@@ -62,6 +62,7 @@ export default function List({ filter = '' }) {
             date={item.date}
             commentsCount={item.commentsCount}
             likes={item.likes}
+            photo={item.photo}
             onLike={function (event) {
               onLike(event, item.id, item.likes);
             }}

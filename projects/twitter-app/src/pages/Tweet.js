@@ -60,6 +60,7 @@ export default function Tweet() {
         date={data.date}
         commentsCount={data.commentsCount}
         likes={data.likes}
+        photo={data.photo}
         onLike={onLike}
       />
       <hr />

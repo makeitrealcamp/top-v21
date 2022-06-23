@@ -13,13 +13,18 @@ export default function Create() {
   async function onSubmit(event) {
     event.preventDefault();
 
-    const { content } = event.target.elements;
+    const { content, photo } = event.target.elements;
+
+    const formData = new FormData();
+
+    formData.append('content', content.value);
+    formData.append('photo', photo.files[0]);
 
     try {
       setError('');
       setLoading(true);
 
-      await createTweet({ content: content.value });
+      await createTweet(formData);
 
       setLoading(false);
       navigate('/');
@@ -34,6 +39,10 @@ export default function Create() {
       <h2 className="my-4">Create a Tweet</h2>
       {error && <Alert variant="danger">{error}</Alert>}
       <Form onSubmit={onSubmit}>
+        <Form.Group className="mb-3">
+          <Form.Label>Photo</Form.Label>
+          <Form.Control type="file" name="photo" accept="image/jpeg" />
+        </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Content</Form.Label>
           <Form.Control type="text" name="content" as="textarea" rows={5} />

@@ -65,6 +65,7 @@ export default function TweetCard({
   date = '',
   commentsCount = 0,
   likes = 0,
+  photo = {},
   onLike,
 }) {
   return (
@@ -75,7 +76,8 @@ export default function TweetCard({
         </Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{date}</Card.Subtitle>
         <Card.Text>{content}</Card.Text>
-        <div className="d-flex me-2">
+        {photo.path && <Card.Img variant="top" src={photo.path} />}
+        <div className="d-flex me-2 mt-2">
           <Comments count={commentsCount} />
           <Likes count={likes} onClick={onLike} />
         </div>

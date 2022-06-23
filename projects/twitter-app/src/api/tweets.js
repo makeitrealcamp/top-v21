@@ -20,6 +20,12 @@ function transformTweet(item) {
       ? item.comments.map(transformComment)
       : [],
     likes: item.likes,
+    photo: {
+      ...item.photo,
+      path: item.photo?.path
+        ? `${process.env.REACT_APP_SERVER_URL}/${item.photo.path}`
+        : '',
+    },
   };
 }
 
@@ -47,8 +53,8 @@ export function getTweet({ id }) {
   });
 }
 
-export function createTweet({ content }) {
-  return http.post(`/tweets`, { content }).then((response) => {
+export function createTweet(formData) {
+  return http.post(`/tweets`, formData).then((response) => {
     const { data: json } = response;
     return {
       data: transformTweet(json.data),
