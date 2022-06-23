@@ -13,6 +13,16 @@ const fields = {
     type: Number,
     default: 0,
   },
+  photo: {
+    fieldname: String,
+    originalname: String,
+    encoding: String,
+    mimetype: String,
+    destination: String,
+    filename: String,
+    path: String,
+    size: Number,
+  },
 };
 
 const references = {

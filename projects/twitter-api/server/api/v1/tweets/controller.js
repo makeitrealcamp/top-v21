@@ -79,11 +79,13 @@ exports.list = async (req, res, next) => {
 };
 
 exports.create = async (req, res, next) => {
-  const { body = {}, decoded = {} } = req;
+  const { body = {}, decoded = {}, file = {} } = req;
   const { id } = decoded;
 
   try {
-    const model = new Model(Object.assign(body, { userId: id }));
+    const model = new Model(
+      Object.assign(body, { userId: id }, { photo: file }),
+    );
     const doc = await model.save();
 
     res.status(201);

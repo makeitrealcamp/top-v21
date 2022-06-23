@@ -3,6 +3,7 @@ const controller = require('./controller');
 const commentsRoutes = require('../comments/routes');
 const { auth, owner } = require('../auth');
 const { sanitizers } = require('./model');
+const upload = require('../upload');
 
 const router = express.Router();
 
@@ -17,7 +18,7 @@ const router = express.Router();
 router
   .route('/')
   .get(controller.list)
-  .post(auth, sanitizers, controller.create);
+  .post(auth, sanitizers, upload.single('photo'), controller.create);
 
 router.param('id', controller.id);
 

@@ -1,7 +1,6 @@
 const express = require('express');
 const { logger, requests } = require('./logger');
 const { v4: uuidv4 } = require('uuid');
-
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 
@@ -28,10 +27,10 @@ app.use(
 );
 app.use(express.json());
 
-app.use('/api', api);
 app.use('/api/v1', api);
+app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(docs));
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs));
+app.use('/uploads', express.static('uploads'));
 
 app.use((req, res, next) => {
   next({
@@ -45,8 +44,8 @@ app.use((err, req, res, next) => {
   const { message = '', level = 'error' } = err;
   let { statusCode = 500 } = err;
 
-  if (err?.name === 'ValidationError') {
-    statusCode = 422;
+  if (err?.name === 'ValidationError' || err?.name === 'MulterError') {
+    statusCode = 400;
   }
 
   const log = `${logger.header(req)} ${statusCode} ${message}`;
