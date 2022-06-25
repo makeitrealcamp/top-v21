@@ -50,3 +50,11 @@ export async function updateUser(payload) {
     data: transformUser(json.data),
   };
 }
+
+export function activateUser(token) {
+  return http.get(`/users/activate/${token}`);
+}
+
+export function confirmUser(payload) {
+  return http.post(`/users/confirmation`, payload);
+}

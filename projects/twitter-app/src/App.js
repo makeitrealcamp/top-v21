@@ -12,6 +12,8 @@ const Create = React.lazy(() => import('./pages/Create'));
 const SignIn = React.lazy(() => import('./pages/SignIn'));
 const SignOut = React.lazy(() => import('./pages/SignOut'));
 const SignUp = React.lazy(() => import('./pages/SignUp'));
+const Activate = React.lazy(() => import('./pages/Activate'));
+const Confirmation = React.lazy(() => import('./pages/Confirmation'));
 const Tweet = React.lazy(() => import('./pages/Tweet'));
 const Profile = React.lazy(() => import('./pages/Profile'));
 const ProfileEdit = React.lazy(() => import('./pages/ProfileEdit'));
@@ -45,6 +47,8 @@ export default function App() {
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/signout" element={<SignOut />} />
                 <Route path="/signup" element={<SignUp />} />
+                <Route path="/activate/:token" element={<Activate />} />
+                <Route path="/confirmation" element={<Confirmation />} />
                 <Route
                   path="/users/profile"
                   element={

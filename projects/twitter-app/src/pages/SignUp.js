@@ -1,7 +1,6 @@
 import { ErrorMessage, Formik } from 'formik';
 import React, { useState } from 'react';
 import { Alert, Button, Form, Spinner } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import { signUp } from '../api/users';
@@ -17,20 +16,23 @@ const profileSchema = Yup.object({
 });
 
 export default function SignUp() {
-  const navigate = useNavigate();
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [created, setCreated] = useState(false);
 
   async function onSubmit(values, { setSubmitting }) {
     setSubmitting(true);
     try {
-      setError('');
+      setError(null);
       setLoading(true);
-      await signUp(values);
+
+      const json = await signUp(values);
+
       setLoading(false);
       setSubmitting(false);
-
-      navigate('/');
+      setEmail(json.data.email);
+      setCreated(true);
     } catch (error) {
       setLoading(false);
       setError(error);
@@ -45,12 +47,34 @@ export default function SignUp() {
     );
   }
 
+  if (created) {
+    return (
+      <div className="px-4 py-5 my-5 text-center">
+        <h1>Account creation</h1>
+        <h1 className="display-5 fw-bold">Your account has been created</h1>
+        <div className="col-lg-6 mx-auto">
+          <p className="lead mb-4">
+            Check your email: <strong>{email}</strong> to activate your account.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <h2 className="my-4">Sign Up</h2>
-      {error && <Alert variant="danger">{error}</Alert>}
+      {error && <Alert variant="danger">{error?.message}</Alert>}
       <Formik
-        initialValues={{}}
+        initialValues={{
+          firstname: '',
+          lastname: '',
+          username: '',
+          email: '',
+          password: '',
+          description: '',
+          location: '',
+        }}
         onSubmit={onSubmit}
         validationSchema={profileSchema}
       >
@@ -171,7 +195,7 @@ export default function SignUp() {
                 as="textarea"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.desription}
+                value={values.description}
                 className={
                   touched.description && errors.description ? 'is-invalid' : ''
                 }
