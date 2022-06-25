@@ -34,7 +34,7 @@ export default function SignIn() {
   return (
     <>
       <h2 className="my-4">Sign In</h2>
-      {error && <Alert variant="danger">{error}</Alert>}
+      {error && <Alert variant="danger">{error?.message}</Alert>}
       <Form onSubmit={onSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Email</Form.Label>

@@ -19,7 +19,7 @@ export default function Profile() {
 
   return (
     <>
-      {error && <Alert variant="danger">={error}</Alert>}
+      {error && <Alert variant="danger">{error?.message}</Alert>}
       {user?.username === data.username && (
         <Link className="btn btn-primary mt-4" to="/users/profile">
           Edit Profile

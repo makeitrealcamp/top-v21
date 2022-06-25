@@ -46,7 +46,7 @@ export default function ProfileEdit() {
   return (
     <>
       <h2 className="my-4">Edit Profile</h2>
-      {error && <Alert variant="danger">{error}</Alert>}
+      {error && <Alert variant="danger">{error?.message}</Alert>}
 
       <Formik
         initialValues={{ ...data }}

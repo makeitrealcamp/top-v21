@@ -53,7 +53,7 @@ export default function Tweet() {
 
   return (
     <>
-      {error && <Alert variant="danger">{error}</Alert>}
+      {error && <Alert variant="danger">{error?.message}</Alert>}
       <TweetCard
         user={data.user}
         content={data.content}

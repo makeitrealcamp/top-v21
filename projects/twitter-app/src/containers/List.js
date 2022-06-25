@@ -48,7 +48,7 @@ export default function List({ filter = '' }) {
 
   return (
     <>
-      {error && <Alert variant="danger">={error}</Alert>}
+      {error && <Alert variant="danger">{error?.message}</Alert>}
       {filteredData?.map((item) => (
         <div
           key={item.id}

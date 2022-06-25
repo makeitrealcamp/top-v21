@@ -37,7 +37,7 @@ export default function Create() {
   return (
     <>
       <h2 className="my-4">Create a Tweet</h2>
-      {error && <Alert variant="danger">{error}</Alert>}
+      {error && <Alert variant="danger">{error?.message}</Alert>}
       <Form onSubmit={onSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Photo</Form.Label>

@@ -7,8 +7,8 @@ function transformTweet(item) {
   return {
     id: item._id,
     user: {
-      username: item.userId.username,
-      name: item.userId.name,
+      username: item.userId?.username,
+      name: item.userId?.name,
     },
     content: item.content,
     date: formatDistance(new Date(item.createdAt), new Date(), {
