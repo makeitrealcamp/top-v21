@@ -1,5 +1,6 @@
 const { Model } = require('./model');
 const { signToken } = require('../auth');
+const { sendMail } = require('../../../mail');
 
 exports.signin = async (req, res, next) => {
   const { body = {} } = req;
@@ -43,18 +44,10 @@ exports.signup = async (req, res, next) => {
     const model = new Model(body);
     const doc = await model.save();
 
-    const { _id: id } = doc;
-    const token = signToken({ id });
-
-    res.status(201);
-    res.json({
-      data: doc,
-      meta: {
-        token,
-      },
-    });
-  } catch (err) {
-    next(err);
+    req.body.email = doc.email;
+    next();
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -76,7 +69,7 @@ exports.read = async (req, res) => {
       });
     }
   } catch (error) {
-    next(err);
+    next(error);
   }
 };
 
@@ -98,6 +91,75 @@ exports.update = async (req, res) => {
       });
     }
   } catch (error) {
-    next(err);
+    next(error);
+  }
+};
+
+exports.confirmation = async (req, res, next) => {
+  const { body = {} } = req;
+  const { email } = body;
+
+  const user = await Model.findOne({ email });
+
+  if (user) {
+    const token = signToken({ email }, '1d');
+
+    try {
+      await sendMail({
+        to: email,
+        subject: 'Activate your account',
+        text: `
+          Visit the following link to activate your account:
+          ${process.env.APP_SERVER_URL}/activate/${token}
+        `,
+        html: `
+          <p>
+            Visit the following link to activate your account:
+            <a href="${process.env.APP_SERVER_URL}/activate/${token}" target="_blank">
+              Activate your account
+            </a>
+          </p>
+        `,
+      });
+
+      res.json({
+        data: {
+          email,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  } else {
+    next({
+      statusCode: 404,
+      message: 'User not found',
+    });
+  }
+};
+
+exports.activate = async (req, res, next) => {
+  const { decoded = {} } = req;
+  const { email } = decoded;
+
+  try {
+    const user = await Model.findOneAndUpdate(
+      { email },
+      { active: 1 },
+      { new: true },
+    );
+
+    if (user) {
+      res.json({
+        success: true,
+      });
+    } else {
+      next({
+        statusCode: 404,
+        message: 'User not found',
+      });
+    }
+  } catch (error) {
+    next(error);
   }
 };

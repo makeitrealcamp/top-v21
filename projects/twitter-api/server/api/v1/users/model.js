@@ -51,6 +51,10 @@ const fields = {
     trim: true,
     minLength: 6,
   },
+  active: {
+    type: Number,
+    default: 0,
+  },
 };
 
 const user = new Schema(fields, {
@@ -97,10 +101,7 @@ user.methods.verifyPassword = function (value) {
   return compare(value, this.password);
 };
 
-const sanitizers = [
-  body('email').normalizeEmail(),
-  body('description').escape(),
-];
+const sanitizers = [body('email'), body('description').escape()];
 
 module.exports = {
   Model: mongoose.model('user', user),

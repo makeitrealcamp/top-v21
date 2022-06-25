@@ -67,9 +67,34 @@ const me = (req, res, next) => {
   }
 };
 
+const activate = async (req, res, next) => {
+  const { params = {} } = req;
+  const { token = '' } = params;
+
+  if (!token) {
+    return next({
+      message: 'Cannot activate account',
+      statusCode: 400,
+    });
+  }
+
+  verify(token, secret, function (err, decoded) {
+    if (err) {
+      next({
+        message: 'Cannot activate account',
+        statusCode: 400,
+      });
+    } else {
+      req.decoded = decoded;
+      next();
+    }
+  });
+};
+
 module.exports = {
   signToken,
   auth,
   owner,
   me,
+  activate,
 };
