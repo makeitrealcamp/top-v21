@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Alert, Button, Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import { createTweet } from '../api/tweets';
+import ErrorLayoutBuilder from '../components/ErrorLayoutBuilder';
 
 export default function Create() {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ export default function Create() {
   return (
     <>
       <h2 className="my-4">Create a Tweet</h2>
-      {error && <Alert variant="danger">{error?.message}</Alert>}
+      {error && <ErrorLayoutBuilder error={error} />}
       <Form onSubmit={onSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Photo</Form.Label>

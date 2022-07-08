@@ -1,9 +1,10 @@
 import { ErrorMessage, Formik } from 'formik';
 import React, { useState } from 'react';
-import { Alert, Button, Form, Spinner } from 'react-bootstrap';
+import { Button, Form, Spinner } from 'react-bootstrap';
 import * as Yup from 'yup';
 
 import { signUp } from '../api/users';
+import ErrorLayoutBuilder from '../components/ErrorLayoutBuilder';
 
 const profileSchema = Yup.object({
   firstname: Yup.string().required(),
@@ -64,7 +65,7 @@ export default function SignUp() {
   return (
     <>
       <h2 className="my-4">Sign Up</h2>
-      {error && <Alert variant="danger">{error?.message}</Alert>}
+      {error && <ErrorLayoutBuilder error={error} />}
       <Formik
         initialValues={{
           firstname: '',

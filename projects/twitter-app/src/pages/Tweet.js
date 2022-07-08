@@ -3,10 +3,11 @@ import { useParams } from 'react-router-dom';
 import { useSWRConfig } from 'swr';
 
 import TweetCard from '../components/TweetCard';
-import { Alert, Button, Form, Spinner } from 'react-bootstrap';
+import { Button, Form, Spinner } from 'react-bootstrap';
 import useTweet from '../hooks/useTweet';
 import Comment from '../components/Comment';
 import { createComment } from '../api/comments';
+import ErrorLayoutBuilder from '../components/ErrorLayoutBuilder';
 
 export default function Tweet() {
   const { mutate } = useSWRConfig();
@@ -53,7 +54,7 @@ export default function Tweet() {
 
   return (
     <>
-      {error && <Alert variant="danger">{error?.message}</Alert>}
+      {error && <ErrorLayoutBuilder error={error} />}
       <TweetCard
         user={data.user}
         content={data.content}

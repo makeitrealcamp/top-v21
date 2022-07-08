@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Alert, Button, Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { confirmUser } from '../api/users';
+import ErrorLayoutBuilder from '../components/ErrorLayoutBuilder';
 
 export default function Confirmation() {
   const [error, setError] = useState(null);
@@ -44,7 +45,7 @@ export default function Confirmation() {
 
   return (
     <>
-      {error && <Alert variant="danger">{error?.message}</Alert>}
+      {error && <ErrorLayoutBuilder error={error} />}
       <div className="px-4 py-5 my-5 text-center">
         <h1>Account Activation</h1>
         <p>

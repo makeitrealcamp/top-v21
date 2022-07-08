@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
-import { Alert, Button, Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { signIn } from '../api/users';
+import ErrorLayoutBuilder from '../components/ErrorLayoutBuilder';
 import UserContext from '../containers/UserContext';
 import useFetchState from '../hooks/useFetchState';
 
@@ -34,7 +35,7 @@ export default function SignIn() {
   return (
     <>
       <h2 className="my-4">Sign In</h2>
-      {error && <Alert variant="danger">{error?.message}</Alert>}
+      {error && <ErrorLayoutBuilder error={error} />}
       <Form onSubmit={onSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Email</Form.Label>

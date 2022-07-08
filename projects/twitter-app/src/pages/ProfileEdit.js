@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
-import { Alert, Button, Form, Spinner } from 'react-bootstrap';
+import { Button, Form, Spinner } from 'react-bootstrap';
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import UserContext from '../containers/UserContext';
 import useProfile from '../hooks/useProfile';
 import { updateUser } from '../api/users';
+import ErrorLayoutBuilder from '../components/ErrorLayoutBuilder';
 
 const profileSchema = Yup.object({
   firstname: Yup.string().required(),
@@ -46,7 +47,7 @@ export default function ProfileEdit() {
   return (
     <>
       <h2 className="my-4">Edit Profile</h2>
-      {error && <Alert variant="danger">{error?.message}</Alert>}
+      {error && <ErrorLayoutBuilder error={error} />}
 
       <Formik
         initialValues={{ ...data }}

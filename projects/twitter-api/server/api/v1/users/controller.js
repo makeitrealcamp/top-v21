@@ -12,6 +12,7 @@ exports.signin = async (req, res, next) => {
       return next({
         message: 'Email or password invalid',
         statusCode: 401,
+        code: 'UNAUTHORIZED',
       });
     }
 
@@ -20,6 +21,7 @@ exports.signin = async (req, res, next) => {
       return next({
         message: 'Email or password invalid',
         statusCode: 401,
+        code: 'UNAUTHORIZED',
       });
     }
 
@@ -73,7 +75,7 @@ exports.read = async (req, res) => {
   }
 };
 
-exports.update = async (req, res) => {
+exports.update = async (req, res, next) => {
   const { decoded = {}, body = {} } = req;
   const { id } = decoded;
 

@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { Alert, Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
+import ErrorLayoutBuilder from '../components/ErrorLayoutBuilder';
 import UserContext from '../containers/UserContext';
 import useProfile from '../hooks/useProfile';
 
@@ -19,7 +20,7 @@ export default function Profile() {
 
   return (
     <>
-      {error && <Alert variant="danger">{error?.message}</Alert>}
+      {error && <ErrorLayoutBuilder error={error} />}
       {user?.username === data.username && (
         <Link className="btn btn-primary mt-4" to="/users/profile">
           Edit Profile

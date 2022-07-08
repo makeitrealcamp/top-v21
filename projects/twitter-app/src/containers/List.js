@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
-import { Alert, Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import ErrorLayoutBuilder from '../components/ErrorLayoutBuilder';
 
 import TweetCard from '../components/TweetCard';
 import useTweets from '../hooks/useTweets';
@@ -48,7 +49,7 @@ export default function List({ filter = '' }) {
 
   return (
     <>
-      {error && <Alert variant="danger">{error?.message}</Alert>}
+      {error && <ErrorLayoutBuilder error={error} />}
       {filteredData?.map((item) => (
         <div
           key={item.id}

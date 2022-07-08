@@ -1,8 +1,9 @@
 import { ErrorMessage, Formik } from 'formik';
 import React, { useState } from 'react';
-import { Alert, Button, Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { resetPassword } from '../api/users';
+import ErrorLayoutBuilder from '../components/ErrorLayoutBuilder';
 
 export default function ResetPassword() {
   const params = useParams();
@@ -55,7 +56,7 @@ export default function ResetPassword() {
   return (
     <>
       <h2 className="my-4">Reset Password</h2>
-      {error && <Alert variant="danger">{error?.message}</Alert>}
+      {error && <ErrorLayoutBuilder error={error} />}
       <Formik
         initialValues={{
           password: '',

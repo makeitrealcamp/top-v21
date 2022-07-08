@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { activateUser } from '../api/users';
+import ErrorLayoutBuilder from '../components/ErrorLayoutBuilder';
 
 export default function Activate() {
   const params = useParams();
@@ -55,7 +56,7 @@ export default function Activate() {
                 Go to <Link to="/confirmation">Confirmation</Link> page to send
                 another activation link.
               </p>
-              <Alert variant="danger">{error?.message}</Alert>
+              <ErrorLayoutBuilder error={error} />
             </>
           ) : (
             <>

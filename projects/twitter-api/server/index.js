@@ -46,6 +46,7 @@ app.use((err, req, res, next) => {
 
   if (err?.name === 'ValidationError' || err?.name === 'MulterError') {
     statusCode = 400;
+    err.errors = Object.values(err.errors);
   }
 
   const log = `${logger.header(req)} ${statusCode} ${message}`;
@@ -53,7 +54,9 @@ app.use((err, req, res, next) => {
 
   res.status(statusCode);
   res.json({
-    message,
+    ...err,
+    traceId: req.id,
+    statusCode,
   });
 });
 
