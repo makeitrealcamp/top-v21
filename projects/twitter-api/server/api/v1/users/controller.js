@@ -138,6 +138,50 @@ exports.confirmation = async (req, res, next) => {
   }
 };
 
+exports.forgotPassword = async (req, res, next) => {
+  const { body = {} } = req;
+  const { email } = body;
+
+  const user = await Model.findOne({ email });
+
+  if (user) {
+    const token = signToken({ email }, '1d');
+
+    try {
+      await sendMail({
+        to: email,
+        subject: 'Reset your password',
+        text: `
+          Visit the following link to reset your password:
+          ${process.env.APP_SERVER_URL}/reset-password/${token}
+        `,
+        html: `
+          <p>
+            Visit the following link to reset your password:
+            <a href="${process.env.APP_SERVER_URL}/reset-password/${token}" target="_blank">
+            Reset your password
+            </a>
+          </p>
+        `,
+      });
+
+      res.json({
+        data: {
+          email,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  } else {
+    res.json({
+      data: {
+        email,
+      },
+    });
+  }
+};
+
 exports.activate = async (req, res, next) => {
   const { decoded = {} } = req;
   const { email } = decoded;
@@ -146,6 +190,40 @@ exports.activate = async (req, res, next) => {
     const user = await Model.findOneAndUpdate(
       { email },
       { active: 1 },
+      { new: true },
+    );
+
+    if (user) {
+      res.json({
+        success: true,
+      });
+    } else {
+      next({
+        statusCode: 404,
+        message: 'User not found',
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.resetPassword = async (req, res, next) => {
+  const { decoded = {}, body = {} } = req;
+  const { email } = decoded;
+  const { password, passwordConfirmation } = body;
+
+  if (password !== passwordConfirmation) {
+    return next({
+      statusCode: 400,
+      message: 'Password and Password confirmarion do not match',
+    });
+  }
+
+  try {
+    const user = await Model.findOneAndUpdate(
+      { email },
+      { password },
       { new: true },
     );
 

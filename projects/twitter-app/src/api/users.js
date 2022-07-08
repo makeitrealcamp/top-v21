@@ -58,3 +58,11 @@ export function activateUser(token) {
 export function confirmUser(payload) {
   return http.post(`/users/confirmation`, payload);
 }
+
+export function forgotPassword(payload) {
+  return http.post(`/users/forgot-password`, payload);
+}
+
+export function resetPassword(token, payload) {
+  return http.post(`/users/reset-password/${token}`, payload);
+}

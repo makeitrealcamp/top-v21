@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Alert, Button, Form } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { signIn } from '../api/users';
 import UserContext from '../containers/UserContext';
@@ -51,6 +51,11 @@ export default function SignIn() {
             placeholder="Enter your Password"
             name="password"
           />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>
+            <Link to="/forgot-password">Forgot Password?</Link>
+          </Form.Label>
         </Form.Group>
         <Button
           variant="primary"

@@ -14,6 +14,8 @@ const SignOut = React.lazy(() => import('./pages/SignOut'));
 const SignUp = React.lazy(() => import('./pages/SignUp'));
 const Activate = React.lazy(() => import('./pages/Activate'));
 const Confirmation = React.lazy(() => import('./pages/Confirmation'));
+const ForgotPassword = React.lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = React.lazy(() => import('./pages/ResetPassword'));
 const Tweet = React.lazy(() => import('./pages/Tweet'));
 const Profile = React.lazy(() => import('./pages/Profile'));
 const ProfileEdit = React.lazy(() => import('./pages/ProfileEdit'));
@@ -49,6 +51,11 @@ export default function App() {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/activate/:token" element={<Activate />} />
                 <Route path="/confirmation" element={<Confirmation />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route
+                  path="/reset-password/:token"
+                  element={<ResetPassword />}
+                />
                 <Route
                   path="/users/profile"
                   element={

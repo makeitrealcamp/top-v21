@@ -97,6 +97,14 @@ user.pre('save', async function (next) {
   next();
 });
 
+user.pre('findOneAndUpdate', async function (next) {
+  // this._update has any modified property
+  if (this._update.password) {
+    this._update.password = await hash(this._update.password, 10);
+  }
+  next();
+});
+
 user.methods.verifyPassword = function (value) {
   return compare(value, this.password);
 };

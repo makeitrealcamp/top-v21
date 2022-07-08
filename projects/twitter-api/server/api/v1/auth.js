@@ -67,13 +67,13 @@ const me = (req, res, next) => {
   }
 };
 
-const activate = async (req, res, next) => {
+const authCheck = async (req, res, next) => {
   const { params = {} } = req;
   const { token = '' } = params;
 
   if (!token) {
     return next({
-      message: 'Cannot activate account',
+      message: 'Cannot perform this operation',
       statusCode: 400,
     });
   }
@@ -81,7 +81,7 @@ const activate = async (req, res, next) => {
   verify(token, secret, function (err, decoded) {
     if (err) {
       next({
-        message: 'Cannot activate account',
+        message: 'Cannot perform this operation',
         statusCode: 400,
       });
     } else {
@@ -96,5 +96,5 @@ module.exports = {
   auth,
   owner,
   me,
-  activate,
+  authCheck,
 };
