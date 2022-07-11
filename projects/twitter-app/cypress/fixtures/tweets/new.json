@@ -1,0 +1,28 @@
+{
+  "data": {
+    "_id": "62bdfb40ed0cd91dc1259e1c",
+    "content": "Vancouver",
+    "likes": 0,
+    "userId": {
+      "_id": "62b65fb2fa715fea09fd5054",
+      "username": "gmoralesc",
+      "firstname": "Gustavo",
+      "lastname": "Morales",
+      "description": "",
+      "location": "",
+      "email": "gustavo.morales@gmail.com",
+      "active": 1,
+      "createdAt": "2022-06-25T01:06:58.600Z",
+      "updatedAt": "2022-07-08T00:28:06.403Z",
+      "__v": 0,
+      "name": "Gustavo Morales",
+      "id": "62b65fb2fa715fea09fd5054"
+    },
+    "createdAt": "2022-06-30T19:36:32.672Z",
+    "updatedAt": "2022-06-30T19:36:32.672Z",
+    "__v": 0,
+    "comments": [],
+    "commentsCount": 0,
+    "id": "62bdfb40ed0cd91dc1259e1c"
+  }
+}
