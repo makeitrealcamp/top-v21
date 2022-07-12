@@ -11,7 +11,9 @@ export default function Confirmation() {
   async function onSubmit(event) {
     event.preventDefault();
 
-    const { email } = event.target.elements;
+    const { 
+	email 
+	} = event.target.elements;
 
     try {
       setError(null);
