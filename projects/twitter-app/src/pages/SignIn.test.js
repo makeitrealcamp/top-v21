@@ -17,8 +17,10 @@ describe('SignIn Page', () => {
       </BrowserRouter>,
     );
 
-    const errorMessage = 'Email or password are incorrect';
-    signIn.mockRejectedValue(errorMessage);
+    const error = {
+      message: 'Email or password invalid',
+    };
+    signIn.mockRejectedValue(error);
 
     const email = screen.getByPlaceholderText(/email/i);
     const password = screen.getByPlaceholderText(/password/i);
@@ -38,8 +40,8 @@ describe('SignIn Page', () => {
 
     fireEvent.click(submit);
 
-    await waitFor(() => screen.findByText(errorMessage));
+    await waitFor(() => screen.findByText(error.message));
 
-    expect(screen.getByText(errorMessage)).toBeTruthy();
+    expect(screen.getByText(error.message)).toBeTruthy();
   });
 });
