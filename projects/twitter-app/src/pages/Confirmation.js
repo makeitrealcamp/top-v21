@@ -9,10 +9,9 @@ export default function Confirmation() {
   const [email, setEmail] = useState('');
 
   async function onSubmit(event) {
-    event.preventDefault()
+    event.preventDefault();
 
-    const {email 
-	} = event.target.elements
+    const { email } = event.target.elements;
 
     try {
       setError(null);
