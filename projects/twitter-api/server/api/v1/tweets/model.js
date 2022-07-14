@@ -23,14 +23,17 @@ const fields = {
     path: String,
     size: Number,
   },
+  author: {
+    type: String,
+  },
 };
 
 const references = {
-  userId: {
-    type: mongoose.ObjectId,
-    ref: 'user',
-    required: true,
-  },
+  // userId: {
+  //   type: mongoose.ObjectId,
+  //   ref: 'user',
+  //   required: true,
+  // },
 };
 
 const tweet = new Schema(Object.assign(fields, references), {
@@ -52,10 +55,17 @@ const virtuals = {
     foreignField: 'tweetId',
     count: true,
   },
+  userId: {
+    ref: 'user',
+    localField: 'author',
+    foreignField: 'sub',
+    justOne: true,
+  },
 };
 
 tweet.virtual('comments', virtuals.comments);
 tweet.virtual('commentsCount', virtuals.commentsCount);
+tweet.virtual('userId', virtuals.userId);
 
 const sanitizers = [body('content').escape()];
 

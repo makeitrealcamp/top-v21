@@ -1,4 +1,5 @@
 const { Model, fields, references, virtuals } = require('./model');
+// const { Model: User } = require('../users/model');
 
 const {
   paginationParams,
@@ -79,12 +80,13 @@ exports.list = async (req, res, next) => {
 };
 
 exports.create = async (req, res, next) => {
-  const { body = {}, decoded = {}, file = {} } = req;
-  const { id } = decoded;
+  const { body = {}, auth = {}, file = {} } = req;
+  const { sub } = auth;
 
   try {
+    // const account = await User.findOne({ sub });
     const model = new Model(
-      Object.assign(body, { userId: id }, { photo: file }),
+      Object.assign(body, { author: sub }, { photo: file }),
     );
     const doc = await model.save();
 

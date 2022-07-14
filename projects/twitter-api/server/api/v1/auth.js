@@ -1,4 +1,7 @@
 const { sign, verify } = require('jsonwebtoken');
+const { expressjwt: jwt } = require('express-jwt');
+const jwksRsa = require('jwks-rsa');
+
 const {
   token: { secret, expires },
 } = require('../../config');
@@ -8,32 +11,20 @@ const signToken = (payload, expiresIn = expires) =>
     expiresIn,
   });
 
-const auth = async (req, res, next) => {
-  let { headers: { authorization: token = '' } = {} } = req;
+const auth = jwt({
+  // Dynamically provide a signing key based on the kid in the header and the signing keys provided by the JWKS endpoint.
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`,
+  }),
 
-  if (token.startsWith('Bearer')) {
-    token = token.substring(7);
-  }
-
-  if (!token) {
-    return next({
-      message: 'Unauthorized',
-      statusCode: 401,
-    });
-  }
-
-  verify(token, secret, function (err, decoded) {
-    if (err) {
-      next({
-        message: 'Unauthorized',
-        statusCode: 401,
-      });
-    } else {
-      req.decoded = decoded;
-      next();
-    }
-  });
-};
+  // Validate the audience and the issuer.
+  audience: process.env.AUTH0_AUDIENCE,
+  issuer: `https://${process.env.AUTH0_DOMAIN}/`,
+  algorithms: ['RS256'],
+});
 
 const owner = (req, res, next) => {
   const { decoded = {}, doc = {} } = req;
