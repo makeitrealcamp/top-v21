@@ -6,7 +6,7 @@ export function transformComment(item) {
   return {
     id: item._id,
     user: {
-      username: item.userId.username,
+      username: item.userId.nickname,
       name: item.userId.name,
     },
     comment: item.comment,

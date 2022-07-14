@@ -9,11 +9,11 @@ instance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
 
-    // Add JWT Token
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    // // Add JWT Token
+    // const token = localStorage.getItem('token');
+    // if (token) {
+    //   config.headers.Authorization = `Bearer ${token}`;
+    // }
 
     return config;
   },

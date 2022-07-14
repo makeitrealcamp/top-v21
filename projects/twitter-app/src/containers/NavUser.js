@@ -1,29 +1,42 @@
-import React, { useContext } from 'react';
-import { Nav } from 'react-bootstrap';
+import React from 'react';
+import { Nav, NavLink } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
-import UserContext from './UserContext';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export default function NavUser() {
-  const { user } = useContext(UserContext);
-  // If the user exists
-  return user?.username ? (
+  const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
+
+  return isAuthenticated ? (
     <Nav>
-      <Link to={`/users/${user.username}`} className="nav-link">
-        @{user.username}
+      <Link to={`/users/${user.nickname}`} className="nav-link">
+        @{user.nickname}
       </Link>
-      <Link to="/signout" className="nav-link">
+      <NavLink href="#" onClick={logout}>
         Sign Out
-      </Link>
+      </NavLink>
     </Nav>
   ) : (
     <Nav>
-      <Link to="/signup" className="nav-link">
+      <NavLink
+        href="#"
+        onClick={() => {
+          loginWithRedirect({
+            screen_hint: 'signup',
+          });
+        }}
+      >
         Sign Up
-      </Link>
-      <Link to="/signin" className="nav-link">
+      </NavLink>
+      <NavLink
+        href="#"
+        onClick={() => {
+          loginWithRedirect({
+            redirectUri: `${window.location.origin}/account`,
+          });
+        }}
+      >
         Sign In
-      </Link>
+      </NavLink>
     </Nav>
   );
 }

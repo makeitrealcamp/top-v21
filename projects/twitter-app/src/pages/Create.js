@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import { createTweet } from '../api/tweets';
 import ErrorLayoutBuilder from '../components/ErrorLayoutBuilder';
 
 export default function Create() {
+  const { getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
 
   const [error, setError] = useState('');
@@ -25,7 +27,8 @@ export default function Create() {
       setError('');
       setLoading(true);
 
-      await createTweet(formData);
+      const access_token = await getAccessTokenSilently();
+      await createTweet(formData, access_token);
 
       setLoading(false);
       navigate('/');

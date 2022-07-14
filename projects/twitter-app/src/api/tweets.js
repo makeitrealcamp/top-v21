@@ -7,7 +7,7 @@ function transformTweet(item) {
   return {
     id: item._id,
     user: {
-      username: item.userId?.username,
+      username: item.userId?.nickname,
       name: item.userId?.name,
     },
     content: item.content,
@@ -53,13 +53,16 @@ export function getTweet({ id }) {
   });
 }
 
-export function createTweet(formData) {
-  return http.post(`/tweets`, formData).then((response) => {
-    const { data: json } = response;
-    return {
-      data: transformTweet(json.data),
-    };
+export async function createTweet(formData, token) {
+  const { data: json } = await http.post(`/tweets`, formData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
+
+  return {
+    data: transformTweet(json.data),
+  };
 }
 
 export function updateTweet(payload) {
