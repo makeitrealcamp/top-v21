@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { generateTweet } from '../__fixtures__/tweet.fixture';
+import { generateTweet } from '../test/tweet.factory';
 import TweetCard from './TweetCard';
 
 describe('TweetCard', () => {
