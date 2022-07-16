@@ -1,8 +1,9 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { isEqual } from 'lodash';
+import { Comment as CommentType } from '../api/types';
 
-function Comment({ user, comment, date }) {
+function Comment({ user, comment, date }: CommentType) {
   return (
     <Card className="mt-3 ms-3">
       <Card.Body>

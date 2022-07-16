@@ -1,17 +1,28 @@
 import { useReducer } from 'react';
 
+interface initialStateType {
+  error: Error | null;
+  loading: boolean;
+}
+
+type actionType =
+  | { type: 'INIT' }
+  | { type: 'FETCH' }
+  | { type: 'FULLFILLED' }
+  | { type: 'REJECTED'; payload: Error };
+
 const initialState = {
-  error: '',
+  error: null,
   loading: false,
 };
 
-function reducer(state, action) {
+function reducer(state: initialStateType, action: actionType) {
   switch (action.type) {
     case 'INIT':
       return initialState;
     case 'FETCH':
       return {
-        error: '',
+        error: null,
         loading: true,
       };
     case 'FULLFILLED':
@@ -29,7 +40,9 @@ function reducer(state, action) {
   }
 }
 
-export default function useFetchState() {
+type useFetchStatereturn = [initialStateType, React.Dispatch<actionType>];
+
+export default function useFetchState(): useFetchStatereturn {
   const [{ error, loading }, dispatch] = useReducer(reducer, initialState);
 
   return [{ error, loading }, dispatch];

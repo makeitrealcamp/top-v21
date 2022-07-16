@@ -3,9 +3,9 @@ import { Navigate } from 'react-router-dom';
 import UserContext from './UserContext';
 
 export default function ProtectedRoute({ children }) {
-  const { user } = useContext(UserContext);
+  const context = useContext(UserContext);
 
-  if (!user?.username) {
+  if (!context?.user?.username) {
     return <Navigate to="/signin" />;
   }
 

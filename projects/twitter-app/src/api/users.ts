@@ -1,6 +1,7 @@
 import http from './http';
+import { User, UserInput } from './types';
 
-function transformUser(item) {
+function transformUser(item: UserInput): User {
   return {
     username: item.username,
     firstname: item.firstname,
@@ -12,7 +13,12 @@ function transformUser(item) {
   };
 }
 
-export async function signIn({ email, password }) {
+interface signInParams {
+  email: string;
+  password: string;
+}
+
+export async function signIn({ email, password }: signInParams) {
   return http.post(`/users/signin`, { email, password }).then((response) => {
     const { data: json } = response;
 

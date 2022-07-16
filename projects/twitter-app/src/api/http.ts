@@ -1,7 +1,8 @@
-import { create } from 'axios';
+import axios from 'axios';
+import { API_URL } from '../const';
 
-const instance = create({
-  baseURL: process.env.REACT_APP_API_URL,
+const instance = axios.create({
+  baseURL: API_URL,
 });
 
 // Add a request interceptor
@@ -9,10 +10,12 @@ instance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
 
-    // Add JWT Token
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (config.headers) {
+      // Add JWT Token
+      const token = localStorage.getItem('token');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
 
     return config;

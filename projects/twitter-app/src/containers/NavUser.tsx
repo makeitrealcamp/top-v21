@@ -5,12 +5,13 @@ import { Link } from 'react-router-dom';
 import UserContext from './UserContext';
 
 export default function NavUser() {
-  const { user } = useContext(UserContext);
+  const context = useContext(UserContext);
+
   // If the user exists
-  return user?.username ? (
+  return context?.user?.username ? (
     <Nav>
-      <Link to={`/users/${user.username}`} className="nav-link">
-        @{user.username}
+      <Link to={`/users/${context?.user.username}`} className="nav-link">
+        @{context?.user.username}
       </Link>
       <Link to="/signout" className="nav-link">
         Sign Out

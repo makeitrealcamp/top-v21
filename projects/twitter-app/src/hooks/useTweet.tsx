@@ -13,18 +13,20 @@ export default function useTweet({ id }) {
 
   function like() {
     const payload = {
-      likes: data.data.likes + 1,
+      likes: (data?.data.likes || 0) + 1,
     };
 
-    mutate(
-      {
-        data: {
-          ...data.data,
-          ...payload,
+    if (data) {
+      mutate(
+        {
+          data: {
+            ...data.data,
+            ...payload,
+          },
         },
-      },
-      false,
-    );
+        false,
+      );
+    }
 
     updateTweet({
       id,

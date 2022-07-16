@@ -9,7 +9,7 @@ import useFetchState from '../hooks/useFetchState';
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const { setUser } = useContext(UserContext);
+  const context = useContext(UserContext);
   const [{ error, loading }, dispatch] = useFetchState();
 
   async function onSubmit(event) {
@@ -25,7 +25,7 @@ export default function SignIn() {
       });
       dispatch({ type: 'FULLFILLED' });
 
-      setUser(json.data);
+      context && context.setUser(json.data);
       navigate('/');
     } catch (error) {
       dispatch({ type: 'REJECTED', payload: error });

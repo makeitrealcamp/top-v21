@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import { Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { Tweet } from '../api/types';
 
 function CommentsComponent({ count }) {
   return (
@@ -67,15 +68,22 @@ function Likes({ count, onClick }) {
   );
 }
 
+type TweetCardProps = Pick<
+  Tweet,
+  'user' | 'content' | 'date' | 'commentsCount' | 'likes' | 'photo'
+> & {
+  onLike: (event: SyntheticEvent) => void;
+};
+
 export default function TweetCard({
-  user = {},
+  user,
   content = '',
   date = '',
   commentsCount = 0,
   likes = 0,
-  photo = {},
+  photo,
   onLike,
-}) {
+}: TweetCardProps) {
   return (
     <Card className="mt-3">
       <Card.Body>
@@ -84,7 +92,7 @@ export default function TweetCard({
         </Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{date}</Card.Subtitle>
         <Card.Text>{content}</Card.Text>
-        {photo.path && <Card.Img variant="top" src={photo.path} />}
+        {photo?.path && <Card.Img variant="top" src={photo.path} />}
         <div className="d-flex me-2 mt-2">
           <Comments count={commentsCount} />
           <Likes count={likes} onClick={onLike} />
