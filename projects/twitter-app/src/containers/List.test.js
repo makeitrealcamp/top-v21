@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { getTweets } from '../api/tweets';
-import { generateTweet } from '../__fixtures__/tweet.fixture';
+import { generateTweet } from '../test/tweet.factory';
 import List from './List';
 
 jest.mock('../api/tweets');
