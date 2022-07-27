@@ -1,4 +1,4 @@
-const User = require('./model');
+const { User } = require('../models');
 const { sign } = require('../auth');
 
 exports.signup = async (req, res, next) => {
