@@ -2,6 +2,22 @@ const { Op } = require('sequelize');
 
 const { Conversation, Message, User } = require('../models');
 
+exports.create = async (req, res, next) => {
+  const { body = {} } = req;
+  const { senderId, recipientId } = body;
+
+  let conversation = await Conversation.findConversation(senderId, recipientId);
+  if (!conversation) {
+    conversation = await Conversation.create({
+      user1Id: senderId,
+      user2Id: recipientId,
+    });
+  }
+  res.json({
+    data: conversation,
+  });
+};
+
 exports.all = async (req, res, next) => {
   const { auth } = req;
   const { id: userId } = auth;
