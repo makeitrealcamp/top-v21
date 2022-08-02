@@ -1,8 +1,10 @@
 import { useContext, useEffect, useMemo, useState } from 'react';
-import { Row, Col, Form, Button, Spinner } from 'react-bootstrap';
-import { Conversation, User } from '../api/types';
+import { Row, Col, Spinner } from 'react-bootstrap';
+import { createMessage } from '../api/messages';
+import { Conversation, Message, User } from '../api/types';
 import ErrorLayoutBuilder from '../components/ErrorLayoutBuilder';
 import Chat from '../containers/Chat';
+import FormMessage from '../containers/FormMessage';
 import UserContext from '../containers/UserContext';
 import UsersList from '../containers/UsersList';
 import useConversations from '../domain/useConversations';
@@ -27,6 +29,41 @@ export default function Home() {
     });
     if (conversation) {
       setSelectedConversationId(conversation.id);
+    }
+  }
+
+  function addMessageToConversation({ message }: { message: Message }) {
+    if (conversations) {
+      const updatedConversations = conversations.map((conversation) => {
+        if (conversation.id === message.conversationId) {
+          return {
+            ...conversation,
+            messages: [message, ...conversation.messages],
+          };
+        }
+        return conversation;
+      });
+      setConversations(updatedConversations);
+    }
+  }
+
+  async function onSendMessage(text: string) {
+    try {
+      if (
+        selectedUserId !== undefined &&
+        selectedConversationId !== undefined
+      ) {
+        const { data: message } = await createMessage({
+          text,
+          recipientId: selectedUserId,
+          conversationId: selectedConversationId,
+        });
+        addMessageToConversation({
+          message,
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 
@@ -78,14 +115,7 @@ export default function Home() {
         />
       </Col>
       <Col md={8} className="d-flex flex-column border-start">
-        {messages && (
-          <Form.Group className="mb-3 d-flex">
-            <Form.Control type="text" placeholder="Enter your message" />
-            <Button variant="primary" type="submit">
-              Enviar
-            </Button>
-          </Form.Group>
-        )}
+        {messages && <FormMessage onSendMessage={onSendMessage} />}
         <Chat data={messages} senderId={user?.id} />
       </Col>
     </Row>
