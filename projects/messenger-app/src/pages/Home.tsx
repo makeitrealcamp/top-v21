@@ -78,12 +78,14 @@ export default function Home() {
         />
       </Col>
       <Col md={8} className="d-flex flex-column border-start">
-        <Form.Group className="mb-3 d-flex">
-          <Form.Control type="text" placeholder="Enter your message" />
-          <Button variant="primary" type="submit">
-            Enviar
-          </Button>
-        </Form.Group>
+        {messages && (
+          <Form.Group className="mb-3 d-flex">
+            <Form.Control type="text" placeholder="Enter your message" />
+            <Button variant="primary" type="submit">
+              Enviar
+            </Button>
+          </Form.Group>
+        )}
         <Chat data={messages} senderId={user?.id} />
       </Col>
     </Row>

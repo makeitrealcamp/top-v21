@@ -32,3 +32,11 @@ export async function signUp(payload: signUpParams) {
     };
   });
 }
+
+export async function getUsers() {
+  const { data: json } = await http.get(`/users/`);
+  const users: User[] = json.data;
+  return {
+    data: users,
+  };
+}

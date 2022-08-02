@@ -8,3 +8,16 @@ export async function getConversations() {
     data: conversations,
   };
 }
+
+interface createConversationParams {
+  senderId: number;
+  recipientId: number;
+}
+
+export async function createConversation(payload: createConversationParams) {
+  const { data: json } = await http.post(`/conversations/`, payload);
+  const conversation: Conversation = json.data;
+  return {
+    data: conversation,
+  };
+}
