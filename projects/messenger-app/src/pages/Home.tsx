@@ -1,71 +1,81 @@
-import React from 'react';
-import {
-  Row,
-  Col,
-  ListGroup,
-  Badge,
-  Form,
-  Button,
-  Card,
-} from 'react-bootstrap';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { Row, Col, Form, Button, Spinner } from 'react-bootstrap';
+import { Conversation, User } from '../api/types';
+import ErrorLayoutBuilder from '../components/ErrorLayoutBuilder';
+import Chat from '../containers/Chat';
+import UserContext from '../containers/UserContext';
+import UsersList from '../containers/UsersList';
+import useConversations from '../domain/useConversations';
 
 export default function Home() {
+  const { data, error, loading } = useConversations();
+  const context = useContext(UserContext);
+  const [conversations, setConversations] = useState<
+    Conversation[] | undefined
+  >();
+  const [selectedUserId, setSelectedUserId] = useState<number | undefined>();
+  const [selectedConversationId, setSelectedConversationId] = useState<
+    number | undefined
+  >();
+
+  function onSelectItem(selectedUser: User) {
+    setSelectedUserId(selectedUser.id);
+    const conversation = conversations?.find((item) => {
+      return (
+        item.user1Id === selectedUser.id || item.user2Id === selectedUser.id
+      );
+    });
+    if (conversation) {
+      setSelectedConversationId(conversation.id);
+    }
+  }
+
+  const user = context?.user;
+
+  const users = useMemo(() => {
+    return conversations?.reduce((list: User[], item) => {
+      if (item.user1) {
+        list.push(item.user1);
+      }
+      if (item.user2) {
+        list.push(item.user2);
+      }
+      return list;
+    }, []);
+  }, [conversations]);
+
+  const messages = useMemo(() => {
+    const conversation = conversations?.find((item) => {
+      return item.id === selectedConversationId;
+    });
+    if (conversation) {
+      return conversation.messages;
+    }
+  }, [conversations, selectedConversationId]);
+
+  useEffect(() => {
+    if (data) {
+      setConversations(data);
+    }
+  }, [data]);
+
+  if (loading) {
+    return (
+      <Spinner animation="border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </Spinner>
+    );
+  }
+
   return (
     <Row className="my-4">
+      {error && <ErrorLayoutBuilder error={error} />}
       <Col md={4}>
-        <ListGroup>
-          <ListGroup.Item
-            as="li"
-            className="d-flex justify-content-between align-items-start"
-          >
-            <img
-              src="https://via.placeholder.com/48x48"
-              className="rounded-circle img-thumbnail me-2"
-              alt=""
-            />
-            <div className="ms-2 me-auto">
-              <div className="fw-bold">Juan Granados</div>
-              jgranados
-            </div>
-            <Badge bg="primary" pill>
-              online
-            </Badge>
-          </ListGroup.Item>
-          <ListGroup.Item
-            as="li"
-            className="d-flex justify-content-between align-items-start"
-          >
-            <img
-              src="https://via.placeholder.com/48x48"
-              className="rounded-circle img-thumbnail me-2"
-              alt=""
-            />
-            <div className="ms-2 me-auto">
-              <div className="fw-bold">Miriam Damian</div>
-              mdamian
-            </div>
-            <Badge bg="secondary" pill>
-              offline
-            </Badge>
-          </ListGroup.Item>
-          <ListGroup.Item
-            as="li"
-            className="d-flex justify-content-between align-items-start"
-          >
-            <img
-              src="https://via.placeholder.com/48x48"
-              className="rounded-circle img-thumbnail me-2"
-              alt=""
-            />
-            <div className="ms-2 me-auto">
-              <div className="fw-bold">Samuel Hincapié</div>
-              shincapie
-            </div>
-            <Badge bg="secondary" pill>
-              offline
-            </Badge>
-          </ListGroup.Item>
-        </ListGroup>
+        <UsersList
+          data={users}
+          selectedId={selectedUserId}
+          onSelectItem={onSelectItem}
+        />
       </Col>
       <Col md={8} className="d-flex flex-column border-start">
         <Form.Group className="mb-3 d-flex">
@@ -74,16 +84,7 @@ export default function Home() {
             Enviar
           </Button>
         </Form.Group>
-
-        <div className="d-flex flex-column">
-          <Card className="my-1 w-auto rounded-pill bg-light text-dark align-self-start">
-            <Card.Body className="text-start">Hola</Card.Body>
-          </Card>
-
-          <Card className="my-1 w-auto rounded-pill bg-primary text-white align-self-end">
-            <Card.Body className="text-end">Hola, como estas?</Card.Body>
-          </Card>
-        </div>
+        <Chat data={messages} senderId={user?.id} />
       </Col>
     </Row>
   );
