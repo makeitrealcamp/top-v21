@@ -41,6 +41,24 @@ export default function Home() {
     }
   }
 
+  const setOnlineUserStatus = useCallback(
+    ({ userId, onlineMode }: { userId: number; onlineMode: boolean }) => {
+      if (conversations) {
+        const updatedConversations = conversations.map((conversation) => {
+          if (conversation.user1Id === userId && conversation.user1) {
+            conversation.user1.online = onlineMode;
+          }
+          if (conversation.user2Id === userId && conversation.user2) {
+            conversation.user2.online = onlineMode;
+          }
+          return conversation;
+        });
+        setConversations(updatedConversations);
+      }
+    },
+    [conversations],
+  );
+
   const findConversationIdByUsers = useCallback(
     ({ user1Id, user2Id }: { user1Id?: number; user2Id?: number }) => {
       let conversationId = -1;
@@ -141,10 +159,32 @@ export default function Home() {
       }
     });
 
+    socket.on('online', (userId) => {
+      setOnlineUserStatus({
+        userId,
+        onlineMode: true,
+      });
+    });
+
+    socket.on('offline', (userId) => {
+      setOnlineUserStatus({
+        userId,
+        onlineMode: false,
+      });
+    });
+
     return () => {
       socket.off('response');
+      socket.off('online');
+      socket.off('offline');
     };
-  }, [addMessageToConversation, fetch, findConversationIdByUsers, user?.id]);
+  }, [
+    addMessageToConversation,
+    fetch,
+    findConversationIdByUsers,
+    setOnlineUserStatus,
+    user?.id,
+  ]);
 
   if (loading) {
     return (
@@ -162,6 +202,7 @@ export default function Home() {
           data={users}
           selectedId={selectedUserId}
           onSelectItem={onSelectItem}
+          showOnlineStatus
         />
       </Col>
       <Col md={8} className="d-flex flex-column border-start">

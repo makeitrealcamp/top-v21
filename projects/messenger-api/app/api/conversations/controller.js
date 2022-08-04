@@ -1,6 +1,7 @@
 const { Op } = require('sequelize');
 
 const { Conversation, Message, User } = require('../models');
+const { client } = require('../../cache');
 
 exports.create = async (req, res, next) => {
   const { body = {} } = req;
@@ -23,7 +24,7 @@ exports.all = async (req, res, next) => {
   const { id: userId } = auth;
 
   try {
-    const conversations = await Conversation.findAll({
+    let conversations = await Conversation.findAll({
       where: {
         [Op.or]: [{ user1Id: userId }, { user2Id: userId }],
       },
@@ -59,6 +60,23 @@ exports.all = async (req, res, next) => {
         },
       ],
       order: [[Message, 'createdAt', 'DESC']],
+    });
+
+    const users = await client.HGETALL('users');
+    const usersIdList = Object.values(users);
+
+    conversations = conversations.map((conversation) => {
+      if (conversation.user1Id !== userId && conversation.user1) {
+        conversation.user1.online = usersIdList.includes(
+          String(conversation.user1Id),
+        );
+      }
+      if (conversation.user2Id !== userId && conversation.user2) {
+        conversation.user2.online = usersIdList.includes(
+          String(conversation.user2Id),
+        );
+      }
+      return conversation;
     });
 
     res.json({

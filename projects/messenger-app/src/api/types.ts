@@ -3,6 +3,7 @@ export interface User {
   name: string;
   username: string;
   avatarUrl?: string;
+  online?: boolean;
   id: number;
   createdAt: string;
   updatedAt: string;

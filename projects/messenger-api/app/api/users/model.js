@@ -33,6 +33,10 @@ const User = sequelize.define(
     avatarUrl: {
       type: DataTypes.STRING,
     },
+    online: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   },
   {
     timestamps: true,

@@ -6,6 +6,8 @@ import { signIn } from '../api/users';
 import ErrorLayoutBuilder from '../components/ErrorLayoutBuilder';
 import UserContext from '../containers/UserContext';
 
+import socket from '../socket';
+
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
   password: HTMLInputElement;
@@ -33,6 +35,8 @@ export default function SignIn() {
       setLoading(false);
 
       context && context.setUser(json.data);
+      socket.emit('online', json.data);
+
       navigate('/');
     } catch (error) {
       setLoading(false);

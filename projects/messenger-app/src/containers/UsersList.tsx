@@ -1,4 +1,4 @@
-import { ListGroup } from 'react-bootstrap';
+import { Badge, ListGroup } from 'react-bootstrap';
 
 import { User } from '../api/types';
 
@@ -6,12 +6,14 @@ interface UsersListProps {
   data?: User[];
   selectedId?: number;
   onSelectItem: (user: User) => void;
+  showOnlineStatus?: boolean;
 }
 
 export default function UsersList({
   data,
   selectedId,
   onSelectItem,
+  showOnlineStatus = false,
 }: UsersListProps) {
   return (
     <ListGroup>
@@ -37,6 +39,11 @@ export default function UsersList({
             <div className="fw-bold">{user.name}</div>
             {user.username}
           </div>
+          {showOnlineStatus && (
+            <Badge bg={user.online ? 'primary' : 'secondary'} pill>
+              {user.online ? 'online' : 'offline'}
+            </Badge>
+          )}
         </ListGroup.Item>
       ))}
     </ListGroup>
