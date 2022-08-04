@@ -8,7 +8,8 @@ const sequelize = new Sequelize(name, username, password, {
   host,
   port,
   dialect: 'postgres',
-  logging: console.log,
+  //logging: process.env.NODE_ENV === 'development' ? console.log : false,
+  logging: false,
 });
 
 module.exports = sequelize;

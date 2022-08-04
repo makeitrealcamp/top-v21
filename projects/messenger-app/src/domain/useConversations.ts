@@ -12,6 +12,7 @@ export default function useConversations() {
     try {
       setLoading(true);
       setError(undefined);
+      setData(undefined);
 
       const json = await getConversations();
 
@@ -33,5 +34,8 @@ export default function useConversations() {
     data,
     error,
     loading,
+    actions: {
+      fetch: loadConversations,
+    },
   };
 }

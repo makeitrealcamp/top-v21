@@ -1,7 +1,9 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Row, Col, Spinner } from 'react-bootstrap';
+
 import { createMessage } from '../api/messages';
 import { Conversation, Message, User } from '../api/types';
+
 import ErrorLayoutBuilder from '../components/ErrorLayoutBuilder';
 import Chat from '../containers/Chat';
 import FormMessage from '../containers/FormMessage';
@@ -9,8 +11,15 @@ import UserContext from '../containers/UserContext';
 import UsersList from '../containers/UsersList';
 import useConversations from '../domain/useConversations';
 
+import socket from '../socket';
+
 export default function Home() {
-  const { data, error, loading } = useConversations();
+  const {
+    data,
+    error,
+    loading,
+    actions: { fetch },
+  } = useConversations();
   const context = useContext(UserContext);
   const [conversations, setConversations] = useState<
     Conversation[] | undefined
@@ -32,20 +41,42 @@ export default function Home() {
     }
   }
 
-  function addMessageToConversation({ message }: { message: Message }) {
-    if (conversations) {
-      const updatedConversations = conversations.map((conversation) => {
-        if (conversation.id === message.conversationId) {
-          return {
-            ...conversation,
-            messages: [message, ...conversation.messages],
-          };
+  const findConversationIdByUsers = useCallback(
+    ({ user1Id, user2Id }: { user1Id?: number; user2Id?: number }) => {
+      let conversationId = -1;
+      if (conversations) {
+        const conversation = conversations.find((item) => {
+          return (
+            (item.user1Id === user1Id || item.user2Id === user1Id) &&
+            (item.user1Id === user2Id || item.user2Id === user2Id)
+          );
+        });
+        if (conversation) {
+          conversationId = conversation.id;
         }
-        return conversation;
-      });
-      setConversations(updatedConversations);
-    }
-  }
+      }
+      return conversationId;
+    },
+    [conversations],
+  );
+
+  const addMessageToConversation = useCallback(
+    ({ message }: { message: Message }) => {
+      if (conversations) {
+        const updatedConversations = conversations.map((conversation) => {
+          if (conversation.id === message.conversationId) {
+            return {
+              ...conversation,
+              messages: [message, ...conversation.messages],
+            };
+          }
+          return conversation;
+        });
+        setConversations(updatedConversations);
+      }
+    },
+    [conversations],
+  );
 
   async function onSendMessage(text: string) {
     try {
@@ -61,6 +92,7 @@ export default function Home() {
         addMessageToConversation({
           message,
         });
+        socket.emit('message', message);
       }
     } catch (error) {
       console.error(error);
@@ -95,6 +127,24 @@ export default function Home() {
       setConversations(data);
     }
   }, [data]);
+
+  useEffect(() => {
+    socket.on('response', (message) => {
+      const conversationId = findConversationIdByUsers({
+        user1Id: user?.id,
+        user2Id: message.senderId,
+      });
+      if (conversationId !== -1) {
+        addMessageToConversation({ message });
+      } else {
+        fetch();
+      }
+    });
+
+    return () => {
+      socket.off('response');
+    };
+  }, [addMessageToConversation, fetch, findConversationIdByUsers, user?.id]);
 
   if (loading) {
     return (
