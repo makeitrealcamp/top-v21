@@ -7,6 +7,6 @@ const app = express();
 
 app.use(cors());
 
-app.use('/graphql', graphql);
+graphql(app);
 
 module.exports = app;
