@@ -1,20 +1,9 @@
-const { buildSchema } = require('graphql');
+const { GraphQLSchema } = require('graphql');
+const { queryType, mutationType } = require('./typeDef');
 
-// Construct a schema, using GraphQL schema language
-const schema = buildSchema(`
-  type Schema {
-    query: Query
-  }
-
-  type Query {
-    movie: Movie
-  }
-
-  type Movie {
-    id: ID
-    title: String
-    duration: Int
-  }
-`);
+const schema = new GraphQLSchema({
+  query: queryType,
+  mutation: mutationType,
+});
 
 module.exports = schema;
