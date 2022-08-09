@@ -1,43 +1,21 @@
-const { faker } = require('@faker-js/faker');
+const Movie = require('./model');
 
-function generateMovie(overrides = {}) {
-  const movie = {
-    id: String(faker.datatype.number()),
-    title: faker.lorem.sentence(),
-    description: faker.lorem.text(),
-    duration: faker.datatype.number({ min: 30, max: 180 }),
-    posterURL: faker.internet.url(),
-  };
-
-  return Object.assign(movie, overrides);
-}
-
-const collection = [
-  generateMovie({
-    id: '1',
-    title: 'Back to Future',
-  }),
-  generateMovie(),
-  generateMovie(),
-  generateMovie(),
-  generateMovie(),
-];
-
-const findMovieById = (source, args, context) => {
+const findMovieById = async (source, args, context) => {
   const { id } = args;
-  return collection.find((item) => item.id === id);
+
+  const data = await Movie.findOne({ where: { id } });
+  return data;
 };
 
-const findAllMovies = () => {
-  return collection;
+const findAllMovies = async () => {
+  const data = await Movie.findAll();
+  return data;
 };
 
-const createMovie = (source, args, context) => {
+const createMovie = async (source, args, context) => {
   const { input } = args;
 
-  const data = generateMovie(input);
-  collection.push(data);
-
+  const data = await Movie.create(input);
   return data;
 };
 

@@ -31,6 +31,12 @@ const movieType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'the poster URL of the movie',
     },
+    createdAt: {
+      type: GraphQLString,
+    },
+    updatedAt: {
+      type: GraphQLString,
+    },
   },
 });
 
