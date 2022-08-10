@@ -5,7 +5,10 @@ const {
   GraphQLInt,
   GraphQLNonNull,
   GraphQLInputObjectType,
+  GraphQLList,
 } = require('graphql');
+const { findAllActors } = require('../actors/resolvers');
+const { actorType } = require('../actors/typeDef');
 const { findCategoryById } = require('../categories/resolvers');
 const { categoryType } = require('../categories/typeDef');
 
@@ -33,14 +36,15 @@ const movieType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'the poster URL of the movie',
     },
-    categoryId: {
-      type: GraphQLInt,
-      description: 'the category id of the movie',
-    },
     category: {
       type: categoryType,
       description: 'the category of the movie',
       resolve: findCategoryById,
+    },
+    actors: {
+      type: new GraphQLList(actorType),
+      description: 'the actors and actresses of the movie',
+      resolve: findAllActors,
     },
     createdAt: {
       type: GraphQLString,
@@ -74,6 +78,9 @@ const movieInputType = new GraphQLInputObjectType({
     categoryId: {
       type: new GraphQLNonNull(GraphQLInt),
       description: 'the category id of the movie',
+    },
+    actorsIds: {
+      type: new GraphQLNonNull(new GraphQLList(GraphQLInt)),
     },
   },
 });

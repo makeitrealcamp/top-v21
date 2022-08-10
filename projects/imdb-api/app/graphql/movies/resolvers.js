@@ -14,9 +14,12 @@ const findAllMovies = async () => {
 
 const createMovie = async (source, args, context) => {
   const { input } = args;
+  const { actorsIds, ...body } = input;
 
-  const data = await Movie.create(input);
-  return data;
+  const movie = await Movie.create(body);
+  await movie.setActors(actorsIds);
+
+  return movie;
 };
 
 module.exports = {
