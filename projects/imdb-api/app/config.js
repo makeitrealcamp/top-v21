@@ -9,6 +9,10 @@ const config = {
     host: process.env.DATABASE_HOST,
     port: process.env.DATABASE_PORT,
   },
+  token: {
+    secret: process.env.TOKEN_SECRET,
+    expires: process.env.TOKEN_EXPIRES,
+  },
 };
 
 module.exports = config;

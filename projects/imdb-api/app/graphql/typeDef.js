@@ -6,6 +6,8 @@ const { categoryQueries } = require('./categories/queries');
 const { categoryMutations } = require('./categories/mutations');
 const { actorQueries } = require('./actors/queries');
 const { actorMutations } = require('./actors/mutations');
+const { userQueries } = require('./users/queries');
+const { userMutations } = require('./users/mutations');
 
 const queryType = new GraphQLObjectType({
   name: 'QueryType',
@@ -14,6 +16,7 @@ const queryType = new GraphQLObjectType({
     ...actorQueries,
     ...categoryQueries,
     ...movieQueries,
+    ...userQueries,
   },
 });
 
@@ -24,6 +27,7 @@ const mutationType = new GraphQLObjectType({
     ...actorMutations,
     ...categoryMutations,
     ...movieMutations,
+    ...userMutations,
   },
 });
 
