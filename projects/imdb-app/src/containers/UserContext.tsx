@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 
-import { User } from '../api/types';
+import { User } from '../graphql/types';
+
+export type UserLogin = Pick<User, 'name' | 'username' | 'email'>;
 
 interface UserContextType {
-  user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  user: UserLogin | null;
+  setUser: React.Dispatch<React.SetStateAction<UserLogin | null>>;
 }
 
 interface UserProviderProps {
@@ -14,7 +16,7 @@ interface UserProviderProps {
 const UserContext = React.createContext<UserContextType | null>(null);
 
 export function UserProvider({ children }: UserProviderProps) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserLogin | null>(null);
 
   return (
     <UserContext.Provider

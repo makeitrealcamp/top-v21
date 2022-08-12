@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 import ErrorLayoutBuilder from '../components/ErrorLayoutBuilder';
 import UserContext from '../containers/UserContext';
+import useSignIn from '../domain/useSignIn';
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
@@ -13,8 +14,7 @@ interface FormElements extends HTMLFormControlsCollection {
 export default function SignIn() {
   const navigate = useNavigate();
   const context = useContext(UserContext);
-  const [error, setError] = useState<Error | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [signIn, { data, error, loading }] = useSignIn();
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -22,25 +22,26 @@ export default function SignIn() {
     const form = event.target as HTMLFormElement;
     const { email, password } = form.elements as FormElements;
 
-    try {
-      setError(null);
-      setLoading(true);
-      // const json = await signIn({
-      //   email: email.value,
-      //   password: password.value,
-      // });
-      setLoading(false);
-
-      // context && context.setUser(json.data);
-
-      navigate('/');
-    } catch (error) {
-      setLoading(false);
-      if (error instanceof Error) {
-        setError(error);
-      }
-    }
+    signIn({
+      variables: {
+        email: email.value,
+        password: password.value,
+      },
+    });
   }
+
+  useEffect(() => {
+    if (data) {
+      context &&
+        context.setUser({
+          username: data.signin.username,
+          name: data.signin.name,
+          email: data.signin.email,
+        });
+      localStorage.setItem('token', data.signin.token);
+      navigate('/');
+    }
+  }, [context, data, navigate]);
 
   return (
     <>

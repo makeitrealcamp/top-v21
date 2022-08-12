@@ -9,7 +9,7 @@ export default function SignOut() {
 
   useEffect(() => {
     context?.setUser(null);
-
+    localStorage.removeItem('token');
     navigate('/signin');
   }, [context, navigate]);
 
