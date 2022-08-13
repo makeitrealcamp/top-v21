@@ -10,6 +10,7 @@ export default function SignOut() {
   useEffect(() => {
     context?.setUser(null);
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     navigate('/signin');
   }, [context, navigate]);
 
