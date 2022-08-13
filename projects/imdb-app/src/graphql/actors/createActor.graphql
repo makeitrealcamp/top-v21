@@ -1,0 +1,8 @@
+mutation CreateActor($input: ActorInput!) {
+  createActor(input: $input) {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}
