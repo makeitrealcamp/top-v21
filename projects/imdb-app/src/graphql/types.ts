@@ -6,3 +6,10 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Actor {
+  name: string;
+  id: number;
+  createdAt: string;
+  updatedAt: string;
+}

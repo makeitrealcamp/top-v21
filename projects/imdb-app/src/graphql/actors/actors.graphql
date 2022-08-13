@@ -1,0 +1,8 @@
+query getAllActors {
+  actors {
+    id
+    name
+    createdAt
+    updatedAt
+  }
+}

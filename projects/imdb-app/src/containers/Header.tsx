@@ -13,8 +13,14 @@ export default function Header() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Link to="/create" className="btn btn-primary">
+            <Link to="/create" className="btn btn-primary me-2">
               Create
+            </Link>
+            <Link to="/actors" className="nav-link">
+              Actors
+            </Link>
+            <Link to="/categories" className="nav-link">
+              Categories
             </Link>
           </Nav>
           <NavUser />

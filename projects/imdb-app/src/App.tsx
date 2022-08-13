@@ -12,6 +12,7 @@ const Create = React.lazy(() => import('./pages/Create'));
 const SignIn = React.lazy(() => import('./pages/SignIn'));
 const SignOut = React.lazy(() => import('./pages/SignOut'));
 const SignUp = React.lazy(() => import('./pages/SignUp'));
+const Actors = React.lazy(() => import('./pages/Actors'));
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
+                <Route path="/actors" element={<Actors />} />
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/signout" element={<SignOut />} />
                 <Route path="/signup" element={<SignUp />} />
