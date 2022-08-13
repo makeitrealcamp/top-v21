@@ -14,7 +14,7 @@ const findAllMovies = async () => {
 
 const createMovie = async (source, args, context) => {
   if (!context?.user) {
-    throw new Error('UnAuthorized');
+    throw new Error('Unauthorized');
   }
   const { input } = args;
   const { actorsIds, ...body } = input;

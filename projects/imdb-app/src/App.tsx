@@ -40,7 +40,14 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-                <Route path="/actors" element={<Actors />} />
+                <Route
+                  path="/actors"
+                  element={
+                    <ProtectedRoute>
+                      <Actors />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route path="/signin" element={<SignIn />} />
                 <Route path="/signout" element={<SignOut />} />
                 <Route path="/signup" element={<SignUp />} />

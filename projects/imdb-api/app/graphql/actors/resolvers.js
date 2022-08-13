@@ -15,6 +15,9 @@ const findAllActors = async (source, args, context) => {
 };
 
 const createActor = async (source, args, context) => {
+  if (!context?.user) {
+    throw new Error('Unauthorized');
+  }
   const { input } = args;
 
   const data = await Actor.create(input);
