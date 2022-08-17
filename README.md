@@ -1,10 +1,26 @@
-# Programa Top v21 -  Tiempo Parcial
+# Programa Top v21 - Tiempo Parcial
 
 ## Mentores 👩🏻‍🏫👨🏼‍🏫
-- [Gustavo Morales](https://github.com/gmoralesc)
-- [Sergio Andres Jaramillo](https://github.com/SergioJaramilloL)
+
+&nbsp;&nbsp;&nbsp;&nbsp;**Goye**
+
+![avatar](https://images.weserv.nl/?url=avatars.githubusercontent.com/u/11186639?v=4&h=80&w=80&fit=cover&mask=circle&maxage=7d)
+
+<a href="https://co.linkedin.com/in/carlosgoyeneche/?locale=en_US"><img align="left" src="https://cdn-icons-png.flaticon.com/128/174/174857.png" alt="Goye | LinkedIn" width="21px"/></a>
+<a href="https://www.instagram.com/goyesays/"><img align="left" style="margin-left: 10px" src="https://cdn-icons-png.flaticon.com/128/1409/1409946.png" alt="Goye | Instagram" width="21px"/></a>
+</br>
+
+&nbsp;&nbsp;&nbsp;&nbsp;**Sergio**
+
+![avatar](https://images.weserv.nl/?url=avatars.githubusercontent.com/u/70079208?v=4&h=80&w=80&fit=cover&mask=circle&maxage=7d)
+
+<a href="https://github.com/SergioJaramilloL"><img align="left" src="https://cdn-icons-png.flaticon.com/128/733/733609.png" alt="Sergio | Github" width="21px"/></a>
+</br>
+
+(Anteriormente) [Gustavo Morales](https://github.com/gmoralesc)
 
 ## Estudiantes 👩🏻‍💻🧑🏼‍💻
+
 - [Bibiana Peña](https://github.com/BibianaPena)
 - [Felipe Ramirez Yepes](https://github.com/felipery)
 - [Jailer Fonseca](https://github.com/Jailer008)
@@ -17,10 +33,13 @@
 ## Como es un dia de estudio durante el programa TOP?
 
 ### 8:30 am - 10:00 am:
+
 Clase Magistral con mentor principal
 
 ### 10:00 am - 1:30 pm:
+
 Pueden ocurrir varias actividades en este rango de tiempo
+
 - Clase de habilidades blandas
 - Clase de ingles
 - Reuniones con mentores de apoyo
@@ -32,13 +51,17 @@ Pueden ocurrir varias actividades en este rango de tiempo
 - Terminar los retos o misiones que son asignados en clase
 
 ### 01:00 pm - 2:30 pm
+
 Tiempo para almorzar
 
 ### 02:30 pm - 03:30 pm:
+
 Clase Magistral con mentor principal
 
 ### 03:30 pm - 6:30 pm:
+
 Pueden ocurrir varias actividades en este rango de tiempo
+
 - Clase de habilidades blandas
 - Clase de ingles
 - Reuniones con mentores de apoyo
@@ -73,7 +96,7 @@ Deberás presentar y aprobar las siguienes misiones:
 5. Proyecto Grupal.
 6. Proyecto Individual.
 
-Los lineamientos para los proyectos individuale y grupales son estos: 
+Los lineamientos para los proyectos individuale y grupales son estos:
 
 **El Proyecto Grupal debe tener:**
 
@@ -82,9 +105,9 @@ Los lineamientos para los proyectos individuale y grupales son estos:
 - El backend debe estar implementado en Node.js (Express) y el frontend en React.
 - Debe incluir carga de imágenes y envío de correos.
 - Debe tener al menos una de las siguientes funcionalidades:
-    - Pagos
-    - Presentar información en un mapa.
-    - Tiempo Real (Web Sockets).
+  - Pagos
+  - Presentar información en un mapa.
+  - Tiempo Real (Web Sockets).
 - Debe estar desplegada en Internet (Netllify, Heroku, Vercel)
 - Debe al menos tener pruebas end-to-end con Cypress.
 
@@ -94,8 +117,8 @@ Los lineamientos para los proyectos individuale y grupales son estos:
 - Autenticación de usuarios.
 - Debe incluir carga de imágenes.
 - Se debe presentar un video a modo de DEMO de no mas de 7 minutos donde el estudiantes exponga los siguientes temas:
-    1. Introducción (Nombre del proyecto, URL’s).
-    2. Descripción de la aplicación.
-    3. Metodología (Jira, Github, SCRUM, sprintes)
-    4. Tecnologías (React, Material, Express, [Socket.io](http://socket.io/), MongoDB, )
-    5. Diagrama de como esta distribuida su aplicacion (arquitectura) backend, frontend, servicios extras
+  1. Introducción (Nombre del proyecto, URL’s).
+  2. Descripción de la aplicación.
+  3. Metodología (Jira, Github, SCRUM, sprintes)
+  4. Tecnologías (React, Material, Express, [Socket.io](http://socket.io/), MongoDB, )
+  5. Diagrama de como esta distribuida su aplicacion (arquitectura) backend, frontend, servicios extras
